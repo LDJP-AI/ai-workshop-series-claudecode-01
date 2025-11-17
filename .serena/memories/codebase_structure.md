@@ -31,43 +31,54 @@ project-root/
 ## Key Files Explained
 
 ### app/layout.tsx
+
 Root layout component that wraps every page. Contains:
+
 - HTML structure
 - Font optimization (Geist font)
 - Global metadata
 - Providers (if any)
 
 ### app/page.tsx
+
 The home page component (rendered at `/`). Modify this to change the home page.
 
 ### app/globals.css
+
 Contains:
+
 - Tailwind CSS directives (@tailwind, @layer, @apply)
 - Global CSS variables
 - Font imports
 
 ### next.config.ts
+
 Next.js configuration for build behavior, experimental features, and optimizations.
 
 ### tsconfig.json
+
 TypeScript compiler configuration with strict mode enabled and path aliases.
 
 ### package.json
+
 Lists npm scripts and all dependencies.
 
 ## Architecture Notes
 
 ### React Server Components (RSC)
+
 - Default: All components are Server Components
 - Client-side interactivity: Add `'use client'` directive at the top of the file
 - Benefits: Better performance, direct database access, secrets safe
 
 ### App Router
+
 - File-based routing: `/app/page.tsx` → `/`, `/app/blog/page.tsx` → `/blog`
 - Dynamic routes: `/app/[id]/page.tsx` → `/anything`
 - Nested layouts: Create nested `layout.tsx` files for grouped routes
 
 ### Tailwind CSS
+
 - Scans `/app` directory for class usage
 - No separate CSS files needed (use inline utility classes)
 - Configuration via PostCSS

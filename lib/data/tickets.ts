@@ -20,7 +20,8 @@ const tickets: Ticket[] = [
   {
     id: '1',
     title: 'ログイン機能のバグ修正',
-    description: 'メールアドレスでログインできない問題が発生しています。正しいユーザー認証情報を入力しても401エラーが返される状態です。',
+    description:
+      'メールアドレスでログインできない問題が発生しています。正しいユーザー認証情報を入力しても401エラーが返される状態です。',
     status: 'OPEN',
     priority: 'HIGH',
     labels: [labels[0], labels[3]],
@@ -34,7 +35,8 @@ const tickets: Ticket[] = [
   {
     id: '2',
     title: 'ダークモード機能の追加',
-    description: '設定画面にダークモードのテーマ切り替え機能を実装します。システム設定を既定値として使用してください。',
+    description:
+      '設定画面にダークモードのテーマ切り替え機能を実装します。システム設定を既定値として使用してください。',
     status: 'IN_PROGRESS',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -48,7 +50,8 @@ const tickets: Ticket[] = [
   {
     id: '3',
     title: 'API ドキュメントの更新',
-    description: '不足しているエンドポイントのドキュメント追加とv2 API用のサンプルコードを更新してください。',
+    description:
+      '不足しているエンドポイントのドキュメント追加とv2 API用のサンプルコードを更新してください。',
     status: 'IN_PROGRESS',
     priority: 'MEDIUM',
     labels: [labels[2]],
@@ -62,7 +65,8 @@ const tickets: Ticket[] = [
   {
     id: '4',
     title: 'データベースクエリの最適化',
-    description: 'ユーザーダッシュボードの遅いクエリをプロファイリングして最適化してください。50%のパフォーマンス向上を目標としています。',
+    description:
+      'ユーザーダッシュボードの遅いクエリをプロファイリングして最適化してください。50%のパフォーマンス向上を目標としています。',
     status: 'OPEN',
     priority: 'HIGH',
     labels: [labels[1]],
@@ -76,7 +80,8 @@ const tickets: Ticket[] = [
   {
     id: '5',
     title: '認証モジュールのユニットテスト追加',
-    description: '認証モジュールの包括的なユニットテストを作成してください。カバレッジ80%以上を目標とします。',
+    description:
+      '認証モジュールの包括的なユニットテストを作成してください。カバレッジ80%以上を目標とします。',
     status: 'OPEN',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -90,7 +95,8 @@ const tickets: Ticket[] = [
   {
     id: '6',
     title: 'モバイル版レスポンシブレイアウトの修正',
-    description: '375px以下の画面サイズでナビゲーションメニューが崩れています。フレックスボックスのレイアウトを修正してください。',
+    description:
+      '375px以下の画面サイズでナビゲーションメニューが崩れています。フレックスボックスのレイアウトを修正してください。',
     status: 'DONE',
     priority: 'MEDIUM',
     labels: [labels[0]],
@@ -104,7 +110,8 @@ const tickets: Ticket[] = [
   {
     id: '7',
     title: 'メール通知機能の実装',
-    description: 'チケットのステータス変更またはコメント追加時にメール通知を送信する機能を実装してください。',
+    description:
+      'チケットのステータス変更またはコメント追加時にメール通知を送信する機能を実装してください。',
     status: 'DONE',
     priority: 'LOW',
     labels: [labels[1]],
@@ -118,7 +125,8 @@ const tickets: Ticket[] = [
   {
     id: '8',
     title: 'ユーザーオンボーディングフローの作成',
-    description: 'ガイドツアー機能付きの新規ユーザーオンボーディングウィザードを設計・実装してください。',
+    description:
+      'ガイドツアー機能付きの新規ユーザーオンボーディングウィザードを設計・実装してください。',
     status: 'OPEN',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -132,7 +140,8 @@ const tickets: Ticket[] = [
   {
     id: '9',
     title: '検索機能の追加',
-    description: 'チケット、コメント、ユーザープロフィール全体にわたるフルテキスト検索を実装してください。',
+    description:
+      'チケット、コメント、ユーザープロフィール全体にわたるフルテキスト検索を実装してください。',
     status: 'OPEN',
     priority: 'LOW',
     labels: [labels[1]],
@@ -185,9 +194,7 @@ export async function getTicketCount(): Promise<{
 
 export async function getOverdueTickets(): Promise<Ticket[]> {
   const now = new Date();
-  return tickets.filter(
-    (t) => t.dueDate && new Date(t.dueDate) < now && t.status !== 'DONE'
-  );
+  return tickets.filter((t) => t.dueDate && new Date(t.dueDate) < now && t.status !== 'DONE');
 }
 
 export async function searchTickets(
@@ -205,9 +212,10 @@ export async function searchTickets(
   // 検索クエリで検索
   if (query && query.trim()) {
     const lowerQuery = query.toLowerCase();
-    filtered = filtered.filter((t) =>
-      t.title.toLowerCase().includes(lowerQuery) ||
-      t.description.toLowerCase().includes(lowerQuery)
+    filtered = filtered.filter(
+      (t) =>
+        t.title.toLowerCase().includes(lowerQuery) ||
+        t.description.toLowerCase().includes(lowerQuery)
     );
   }
 
@@ -222,9 +230,7 @@ export async function searchTickets(
       break;
     case 'priority':
       const priorityOrder = { HIGH: 0, MEDIUM: 1, LOW: 2 };
-      sorted.sort(
-        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
-      );
+      sorted.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
       break;
     case 'created':
     default:

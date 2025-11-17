@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Next.js 16 ticket management application built with TypeScript and Tailwind CSS. It serves as a workshop project for the AI Workshop Series focused on Claude and modern web development practices. The application is fully localized to Japanese and includes comprehensive E2E tests.
 
 **Tech Stack:**
+
 - **Framework:** Next.js 16.0.3 with App Router
 - **Language:** TypeScript 5
 - **Styling:** Tailwind CSS 4
@@ -73,12 +74,14 @@ The ticket management system uses a layered architecture:
 ### Key Architectural Patterns
 
 **Server Components by Default**: All components are Server Components unless they need client-side interactivity. This includes:
+
 - Dashboard page (home) - all queries run server-side
 - Ticket list page - server-side data fetching
 - Ticket detail page - server-side rendering of ticket data
 - Edit forms - Server Actions handle submissions
 
 **Client Components**: Use `'use client'` only for:
+
 - Status change dropdown (user interaction needed)
 - Comment form submission
 - Form components that manage input state
@@ -88,6 +91,7 @@ The ticket management system uses a layered architecture:
 ### Type System
 
 All types defined in `types/ticket.ts`:
+
 - `Ticket`: Main entity with CRUD-managed properties
 - `TicketStatus`: `'OPEN' | 'IN_PROGRESS' | 'DONE'`
 - `Priority`: `'LOW' | 'MEDIUM' | 'HIGH'`
@@ -96,6 +100,7 @@ All types defined in `types/ticket.ts`:
 ### Validation Rules
 
 **Ticket Creation/Update**:
+
 - Title: minimum 3 characters
 - Description: minimum 10 characters
 - Priority: defaults to 'MEDIUM' if not specified
@@ -103,17 +108,19 @@ All types defined in `types/ticket.ts`:
 - Due Date: optional (can be null)
 
 **Comment Actions**:
+
 - Content: minimum 2 characters
 
 ### Data Revalidation Strategy
 
 After mutations, the system revalidates cached data for affected routes:
+
 ```typescript
 // Example from updateTicket()
-revalidatePath(`/tickets/${id}`);      // Detail page
-revalidatePath('/tickets');             // List page
-revalidatePath('/');                    // Home dashboard
-redirect(`/tickets/${id}`);             // Navigate to detail
+revalidatePath(`/tickets/${id}`); // Detail page
+revalidatePath('/tickets'); // List page
+revalidatePath('/'); // Home dashboard
+redirect(`/tickets/${id}`); // Navigate to detail
 ```
 
 ## Testing
@@ -164,17 +171,18 @@ The test suite validates the complete ticket lifecycle with Japanese UI text:
 
 ```javascript
 // ❌ Bad - matches multiple elements
-page.locator('text=説明')
+page.locator('text=説明');
 
 // ✅ Good - element type + text
-page.locator('h2:has-text("説明")')
+page.locator('h2:has-text("説明")');
 
 // ✅ Good - semantic locators
-page.getByRole('heading', { name: '説明' })
-page.getByRole('button', { name: 'ステータス変更' })
+page.getByRole('heading', { name: '説明' });
+page.getByRole('button', { name: 'ステータス変更' });
 ```
 
 **Best Practices:**
+
 - Use semantic locators (`getByRole`, `getByLabel`, `getByText` with element type)
 - Use `:has-text()` pseudo-selector when text appears in multiple places
 - Never use generic text-only locators
@@ -192,17 +200,20 @@ page.getByRole('button', { name: 'ステータス変更' })
 ## Common Development Tasks
 
 **Running a single test:**
+
 ```bash
 npm test -- --grep "チケット作成"  # Run by test name pattern
 ```
 
 **Debugging test failures:**
+
 ```bash
 npm run test:debug
 # Opens Inspector tab in browser for step-by-step debugging
 ```
 
 **Adding new features:**
+
 - For data retrieval: Add query function to `lib/data/tickets.ts`
 - For mutations: Add Server Action to `lib/actions/tickets.ts` with validation
 - For UI: Create component in `components/tickets/` or `components/ui/`

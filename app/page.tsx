@@ -12,9 +12,9 @@ export default async function Home() {
   const overdueTickets = await getOverdueTickets();
 
   // 最近のチケット（作成日時の降順）
-  const recentTickets = [...tickets].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  ).slice(0, 6);
+  const recentTickets = [...tickets]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 6);
 
   return (
     <main className="container mx-auto px-4 py-8">

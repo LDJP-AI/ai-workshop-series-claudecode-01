@@ -127,11 +127,7 @@ export default function TicketFilters() {
       {/* フィルターリセットボタン */}
       {hasFilters && (
         <div>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleClearFilters}
-          >
+          <Button variant="secondary" size="sm" onClick={handleClearFilters}>
             フィルターをリセット
           </Button>
         </div>

@@ -8,10 +8,7 @@ interface TicketCommentsProps {
   ticketId: string;
 }
 
-export default function TicketComments({
-  comments,
-  ticketId,
-}: TicketCommentsProps) {
+export default function TicketComments({ comments, ticketId }: TicketCommentsProps) {
   const handleDeleteComment = async (commentId: string) => {
     if (window.confirm('コメントを削除しますか？')) {
       await deleteComment(ticketId, commentId);
@@ -29,10 +26,7 @@ export default function TicketComments({
   return (
     <div className="space-y-4">
       {comments.map((comment) => (
-        <div
-          key={comment.id}
-          className="border border-gray-200 rounded-lg p-4 bg-gray-50"
-        >
+        <div key={comment.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
           {/* Comment Header */}
           <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
             <p>

@@ -19,18 +19,18 @@ async function initializeTickets() {
 // Get assignee by ID
 function getAssigneeById(assigneeId: string | null): User | null {
   if (!assigneeId) return null;
-  return users.find(u => u.id === assigneeId) || null;
+  return users.find((u) => u.id === assigneeId) || null;
 }
 
 // Get labels from form data
 function getLabelsFromFormData(formData: FormData) {
   const selectedLabelIds: string[] = [];
-  labels.forEach(label => {
+  labels.forEach((label) => {
     if (formData.get(`label-${label.id}`)) {
       selectedLabelIds.push(label.id);
     }
   });
-  return labels.filter(l => selectedLabelIds.includes(l.id));
+  return labels.filter((l) => selectedLabelIds.includes(l.id));
 }
 
 export async function createTicket(formData: FormData) {
@@ -204,9 +204,7 @@ export async function deleteComment(ticketId: string, commentId: string) {
     return { error: 'Ticket not found' };
   }
 
-  const commentIndex = tickets[ticketIndex].comments.findIndex(
-    (c) => c.id === commentId
-  );
+  const commentIndex = tickets[ticketIndex].comments.findIndex((c) => c.id === commentId);
   if (commentIndex === -1) {
     return { error: 'Comment not found' };
   }

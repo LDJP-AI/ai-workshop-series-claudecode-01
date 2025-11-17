@@ -1,6 +1,7 @@
 # Code Style and Conventions
 
 ## TypeScript
+
 - **Strict Mode:** Enabled in tsconfig.json (`"strict": true`)
 - **Target:** ES2017
 - **Module System:** ESNext modules with bundler resolution
@@ -9,23 +10,27 @@
 - **Path Aliases:** `@/*` points to project root for imports
 
 ### TypeScript Best Practices in This Project
+
 - Use explicit type annotations for function parameters and return types
 - Leverage interface/type definitions for React component props
 - Use `'use client'` directive only when client-side interactivity is needed
 - Prefer Server Components by default (no directive = server component)
 
 ## ESLint Configuration
+
 - Uses `eslint-config-next/core-web-vitals` for performance/accessibility checks
 - Uses `eslint-config-next/typescript` for TypeScript-specific rules
 - Strict linting enforced
 
 ### Ignored Paths
+
 - `.next/` - Next.js build output
 - `out/` - Static export output
 - `build/` - Build artifacts
 - `next-env.d.ts` - Auto-generated Next.js types
 
 ## React/Next.js Conventions
+
 - **Components:** Functional components with React Server Components as default
 - **Naming:** PascalCase for component files and exports
 - **File Extension:** `.tsx` for files with JSX, `.ts` for TypeScript files
@@ -34,6 +39,7 @@
 - **Imports:** Use `@/` path alias for absolute imports
 
 ## Code Style Guidelines
+
 - Use semicolons
 - Use double quotes for strings
 - Use const/let, avoid var
@@ -42,6 +48,7 @@
 - Write descriptive variable and function names
 
 ## File Organization
+
 - Global styles: `app/globals.css`
 - Layout components: `app/layout.tsx` (root layout)
 - Pages: `app/page.tsx` (home), `app/[route]/page.tsx` (nested routes)

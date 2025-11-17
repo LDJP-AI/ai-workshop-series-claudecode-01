@@ -3,21 +3,27 @@
 ## After Completing a Task, Run These Commands
 
 ### 1. Lint the Code
+
 ```bash
 npm run lint
 ```
+
 Ensure no ESLint errors or warnings are present. Fix any linting issues before proceeding.
 
 ### 2. Build the Project
+
 ```bash
 npm run build
 ```
+
 Verify that the production build succeeds without errors. This catches TypeScript compilation errors and Next.js build issues.
 
 ### 3. Test in Development
+
 ```bash
 npm run dev
 ```
+
 Run the development server and manually test the changes in the browser at http://localhost:3000.
 
 ## Verification Steps
@@ -33,6 +39,7 @@ Run the development server and manually test the changes in the browser at http:
 ## Git Workflow
 
 After verifying the above:
+
 ```bash
 git add .                          # Stage changes
 git commit -m "descriptive message" # Create commit

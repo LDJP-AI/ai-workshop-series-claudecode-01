@@ -26,10 +26,7 @@ test.describe('チケット管理', () => {
 
       // フォームを入力
       await page.fill('input[name="title"]', 'テストチケット作成');
-      await page.fill(
-        'textarea[name="description"]',
-        '作成機能の動作確認用テストチケットです'
-      );
+      await page.fill('textarea[name="description"]', '作成機能の動作確認用テストチケットです');
       await page.selectOption('select[name="priority"]', 'HIGH');
 
       // フォーム送信
@@ -47,10 +44,7 @@ test.describe('チケット管理', () => {
 
       // タイトルが短すぎる
       await page.fill('input[name="title"]', 'ab');
-      await page.fill(
-        'textarea[name="description"]',
-        '十分な長さを持つテスト説明文です'
-      );
+      await page.fill('textarea[name="description"]', '十分な長さを持つテスト説明文です');
 
       // フォーム送信
       await page.click('button[type="submit"]');
@@ -187,7 +181,9 @@ test.describe('チケット管理', () => {
       // ホームページまたは一覧に移動する（window.history.backの動作）
       await page.waitForURL(/\/(tickets)?$/);
       const url = page.url();
-      expect(url === '/' || url === 'http://localhost:3000/' || url.includes('/tickets')).toBeTruthy();
+      expect(
+        url === '/' || url === 'http://localhost:3000/' || url.includes('/tickets')
+      ).toBeTruthy();
     });
   });
 
@@ -364,7 +360,10 @@ test.describe('チケット管理', () => {
       const ticketCards = page.locator('a[href*="/tickets/"]');
 
       const noResults = await noResultsMsg.isVisible().catch(() => false);
-      const hasResults = await ticketCards.count().then((c) => c > 0).catch(() => false);
+      const hasResults = await ticketCards
+        .count()
+        .then((c) => c > 0)
+        .catch(() => false);
 
       expect(noResults || hasResults).toBeTruthy();
     });
@@ -421,9 +420,7 @@ test.describe('チケット管理', () => {
       await page.reload();
 
       // 新しいコメントが表示される
-      await expect(
-        page.locator('p:has-text("これはテストコメントです")').first()
-      ).toBeVisible();
+      await expect(page.locator('p:has-text("これはテストコメントです")').first()).toBeVisible();
     });
 
     test('空のコメントが追加できないこと', async ({ page }) => {
@@ -434,9 +431,7 @@ test.describe('チケット管理', () => {
       await page.click('button:has-text("コメントを追加")');
 
       // エラーメッセージが表示される
-      await expect(
-        page.locator('text=Comment cannot be empty')
-      ).toBeVisible();
+      await expect(page.locator('text=Comment cannot be empty')).toBeVisible();
     });
 
     test('コメント削除ボタンが表示されていること', async ({ page }) => {
@@ -491,12 +486,8 @@ test.describe('チケット管理', () => {
       await page.reload();
 
       // 両方のコメントが表示される
-      await expect(
-        page.locator('p:has-text("最初のコメント")').first()
-      ).toBeVisible();
-      await expect(
-        page.locator('p:has-text("2番目のコメント")').first()
-      ).toBeVisible();
+      await expect(page.locator('p:has-text("最初のコメント")').first()).toBeVisible();
+      await expect(page.locator('p:has-text("2番目のコメント")').first()).toBeVisible();
     });
   });
 });

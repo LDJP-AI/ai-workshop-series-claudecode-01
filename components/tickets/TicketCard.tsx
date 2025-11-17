@@ -75,7 +75,9 @@ export default function TicketCard({ ticket }: TicketCardProps) {
           )}
 
           {ticket.dueDate && (
-            <span className={`flex items-center gap-1 ${isOverdue ? 'text-red-600 font-medium' : ''}`}>
+            <span
+              className={`flex items-center gap-1 ${isOverdue ? 'text-red-600 font-medium' : ''}`}
+            >
               <CalendarIcon className="w-4 h-4" />
               <span>
                 {new Date(ticket.dueDate).toLocaleDateString('ja-JP')}

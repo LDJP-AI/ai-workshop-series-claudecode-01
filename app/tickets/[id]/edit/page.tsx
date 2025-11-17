@@ -24,7 +24,9 @@ export default async function EditTicketPage({ params }: EditTicketPageProps) {
     <main className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">チケット編集</h1>
-        <p className="text-gray-600">#{ticket.id} {ticket.title}</p>
+        <p className="text-gray-600">
+          #{ticket.id} {ticket.title}
+        </p>
       </div>
 
       <Card className="p-6">

@@ -1,14 +1,17 @@
 # Testing Information
 
 ## Test Framework
+
 - **Framework**: Playwright (E2E testing)
 - **Test File**: `e2e/ticket-crud.spec.ts`
 - **Browsers Tested**: Chromium, Firefox (32 tests total: 16 per browser)
 
 ## Test Coverage
+
 The project includes comprehensive E2E tests for the ticket management system:
 
 ### Test Categories
+
 1. **チケット作成** (Ticket Creation) - 4 tests
    - New ticket creation page navigation
    - Normal ticket creation
@@ -40,18 +43,21 @@ The project includes comprehensive E2E tests for the ticket management system:
 ## Common Test Issues & Solutions
 
 ### Strict Mode Violation
+
 **Problem**: Playwright strict mode fails when a locator matches multiple elements
 **Example**: `page.locator('text=説明')` matched both `<h2>説明</h2>` and `<p>...説明を更新...</p>`
 **Solution**: Use more specific CSS selectors
+
 ```javascript
 // ❌ Bad - matches multiple elements
-page.locator('text=説明')
+page.locator('text=説明');
 
 // ✅ Good - specific selector
-page.locator('h2:has-text("説明")')
+page.locator('h2:has-text("説明")');
 ```
 
 ## Test Commands
+
 ```bash
 npm test              # Run all tests
 npm run test:ui       # Interactive UI mode
@@ -59,12 +65,14 @@ npm run test:debug    # Debug mode
 ```
 
 ## Test Configuration
+
 - Config file: `playwright.config.ts`
 - Browser: Chromium and Firefox
 - Server management: Dev server auto-starts during tests
 - Timeout: 5000ms default
 
 ## Key Points for Maintenance
+
 - Always use specific selectors to avoid strict mode violations
 - Prefer `getByRole()` or `getByText()` with specific element types
 - Use `:has-text()` pseudo-selector to target specific elements when multiple match text

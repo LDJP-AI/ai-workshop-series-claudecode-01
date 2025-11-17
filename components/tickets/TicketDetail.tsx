@@ -3,7 +3,13 @@
 import { Ticket, TicketStatus } from '@/types/ticket';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ArrowLeftIcon, PencilIcon, TrashIcon, UserIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowLeftIcon,
+  PencilIcon,
+  TrashIcon,
+  UserIcon,
+  CalendarIcon,
+} from '@heroicons/react/24/outline';
 import { ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -63,7 +69,10 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Link href="/tickets" className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+          <Link
+            href="/tickets"
+            className="text-gray-600 hover:text-gray-900 flex items-center gap-1"
+          >
             <ArrowLeftIcon className="w-5 h-5" />
             <span>戻る</span>
           </Link>

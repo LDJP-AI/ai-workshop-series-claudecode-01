@@ -9,10 +9,7 @@ import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
 
 // ユーザー情報（未割り当てオプション付き）
-const users = [
-  { id: '', name: '未割り当て' },
-  ...dataUsers,
-];
+const users = [{ id: '', name: '未割り当て' }, ...dataUsers];
 
 // ラベル情報
 const labels = dataLabels;
@@ -42,7 +39,7 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
     { value: 'HIGH', label: '高' },
   ];
 
-  const assigneeOptions = users.map(user => ({
+  const assigneeOptions = users.map((user) => ({
     value: user.id,
     label: user.name,
   }));
@@ -103,8 +100,8 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-3">ラベル</label>
         <div className="space-y-2">
-          {labels.map(label => {
-            const isSelected = ticket?.labels?.some(l => l.id === label.id) ?? false;
+          {labels.map((label) => {
+            const isSelected = ticket?.labels?.some((l) => l.id === label.id) ?? false;
             const colorClasses = {
               red: 'bg-red-600',
               blue: 'bg-blue-600',
@@ -120,8 +117,13 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
                   defaultChecked={isSelected}
                   className="w-4 h-4 rounded border-gray-300 text-blue-600 cursor-pointer"
                 />
-                <label htmlFor={`label-${label.id}`} className="ml-2 text-sm text-gray-700 cursor-pointer flex items-center">
-                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${colorClasses[label.color as keyof typeof colorClasses]}`}></span>
+                <label
+                  htmlFor={`label-${label.id}`}
+                  className="ml-2 text-sm text-gray-700 cursor-pointer flex items-center"
+                >
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${colorClasses[label.color as keyof typeof colorClasses]}`}
+                  ></span>
                   {label.name}
                 </label>
               </div>
