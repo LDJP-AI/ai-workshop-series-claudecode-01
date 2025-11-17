@@ -4,7 +4,7 @@ import { createTicket } from '@/lib/actions/tickets';
 
 export default function NewTicketPage() {
   return (
-    <main className="container mx-auto max-w-2xl px-4 py-8">
+    <main className="container mx-auto max-w-5xl px-4 py-8">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold text-gray-900">新規チケット作成</h1>
         <p className="text-gray-600">新しいチケットを作成してください</p>

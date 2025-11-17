@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import Select from '@/components/ui/Select';
 import Textarea from '@/components/ui/Textarea';
 import { labels as dataLabels, users as dataUsers } from '@/lib/data/tickets';
@@ -32,6 +34,7 @@ function SubmitButton({ isLoading }: { isLoading?: boolean }) {
 
 export default function TicketForm({ action, ticket, isLoading }: TicketFormProps) {
   const isEditing = !!ticket;
+  const [description, setDescription] = useState(ticket?.description || '');
 
   const priorityOptions = [
     { value: 'LOW', label: '低' },
@@ -64,15 +67,31 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
         minLength={3}
       />
 
-      <Textarea
-        label="説明"
-        name="description"
-        placeholder="チケットの詳細を説明してください..."
-        defaultValue={ticket?.description || ''}
-        required
-        minLength={10}
-        rows={6}
-      />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div>
+          <Textarea
+            label="説明"
+            name="description"
+            placeholder="チケットの詳細を説明してください...（マークダウン形式対応）"
+            value={description}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+            required
+            minLength={10}
+            rows={8}
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-gray-700">プレビュー</label>
+          <div className="max-h-96 overflow-y-auto rounded border border-gray-200 bg-gray-50 p-4">
+            {description ? (
+              <MarkdownRenderer content={description} />
+            ) : (
+              <p className="text-sm text-gray-400">説明を入力するとプレビューが表示されます</p>
+            )}
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Select

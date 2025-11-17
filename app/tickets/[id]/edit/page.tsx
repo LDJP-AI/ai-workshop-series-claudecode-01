@@ -21,7 +21,7 @@ export default async function EditTicketPage({ params }: EditTicketPageProps) {
   const updateTicketWithId = updateTicket.bind(null, id);
 
   return (
-    <main className="container mx-auto max-w-2xl px-4 py-8">
+    <main className="container mx-auto max-w-5xl px-4 py-8">
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold text-gray-900">チケット編集</h1>
         <p className="text-gray-600">
