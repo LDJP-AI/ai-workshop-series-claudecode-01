@@ -374,6 +374,29 @@ model Comment {
 }
 ```
 
+## よくある警告
+
+### Prisma 設定警告
+
+```
+warn The configuration property `package.json#prisma` is deprecated and will be removed in Prisma 7.
+```
+
+**原因**: Prisma v7 では `package.json` の `prisma` プロパティが非推奨になりました
+
+**現在の対応**: package.json 内に seed 設定を保持していますが、Prisma v7 への完全移行時は `prisma.config.ts` ファイルを使用する必要があります
+
+**対応方法（将来）**:
+
+```typescript
+// prisma.config.ts の例
+export default {
+  seed: "tsx prisma/seed.ts",
+};
+```
+
+現在はこの警告は無害で、すべての機能は正常に動作します。
+
 ## トラブルシューティング
 
 ### データベース関連の問題

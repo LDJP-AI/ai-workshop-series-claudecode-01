@@ -9,6 +9,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Seed configuration (replaces package.json#prisma for Prisma 7 compatibility)
+// Currently using package.json but can be migrated here when needed
+
 model User {
   id    String     @id @default(cuid())
   name  String

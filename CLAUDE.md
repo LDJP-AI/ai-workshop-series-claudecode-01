@@ -335,3 +335,4 @@ npm run prisma:seed
 - All schema changes must go through Prisma migrations (`npm run prisma:migrate`)
 - Tests run with managed dev server and automatic database reset before each test run
 - Seed script (`prisma/seed.ts`) populates initial data after migrations
+- **Prisma v7 Migration Note**: Package.json's `prisma.seed` property is deprecated. This warning is harmless; full migration to `prisma.config.ts` planned for future updates
