@@ -68,6 +68,7 @@
 ### Auto-Formatting
 
 All code is automatically formatted on save using Prettier with:
+
 - Import sorting plugin: Orders imports as React/Next.js → @ aliases → relative paths
 - Tailwind CSS plugin: Orders className attributes by Tailwind best practices
 - Configuration: `.prettierrc`, `.vscode/settings.json`, `.prettierignore`

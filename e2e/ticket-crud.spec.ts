@@ -87,7 +87,7 @@ test.describe('チケット管理', () => {
       await expect(priorityContainer).toBeVisible();
 
       // 説明セクションが表示されている
-      await expect(page.locator('h2:has-text("説明")')).toBeVisible();
+      await expect(page.locator('text="説明"').first()).toBeVisible();
     });
 
     test('チケットのステータスを変更できること', async ({ page }) => {

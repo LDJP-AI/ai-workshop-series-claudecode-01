@@ -1,5 +1,6 @@
 'use client';
 
+import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import { deleteComment } from '@/lib/actions/tickets';
 import { Comment } from '@/types/ticket';
 
@@ -47,7 +48,7 @@ export default function TicketComments({ comments, ticketId }: TicketCommentsPro
           </div>
 
           {/* Comment Content */}
-          <p className="whitespace-pre-wrap text-gray-700">{comment.content}</p>
+          <MarkdownRenderer content={comment.content} />
         </div>
       ))}
     </div>

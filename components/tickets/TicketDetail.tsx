@@ -7,6 +7,7 @@ import TicketComments from '@/components/tickets/TicketComments';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import Select from '@/components/ui/Select';
 import { deleteTicket, updateTicketStatus } from '@/lib/actions/tickets';
 import { Ticket, TicketStatus } from '@/types/ticket';
@@ -178,7 +179,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
 
       <Card className="p-6">
         <h2 className="mb-4 text-2xl font-bold text-gray-900">説明</h2>
-        <p className="whitespace-pre-wrap text-gray-700">{ticket.description}</p>
+        <MarkdownRenderer content={ticket.description} />
       </Card>
 
       <Card className="p-6">

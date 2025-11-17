@@ -73,6 +73,7 @@ The home page component (rendered at `/`). Dashboard showing ticket statistics a
 ### app/tickets/
 
 Ticket management routes:
+
 - `page.tsx` - List all tickets with filtering
 - `new/page.tsx` - Create new ticket form
 - `[id]/page.tsx` - View ticket details with comments
@@ -81,6 +82,7 @@ Ticket management routes:
 ### lib/data/tickets.ts
 
 Data layer with read-only query functions:
+
 - `getTickets()` - Fetch all tickets
 - `getTicketById(id)` - Fetch single ticket
 - `searchTickets(query, status, sortBy)` - Search and filter tickets
@@ -91,6 +93,7 @@ Data layer with read-only query functions:
 ### lib/actions/tickets.ts
 
 Server Actions for mutations:
+
 - `createTicket()` - Create new ticket with validation
 - `updateTicket()` - Update existing ticket
 - `updateTicketStatus()` - Change ticket status
@@ -102,6 +105,7 @@ Server Actions for mutations:
 ### types/ticket.ts
 
 Domain type definitions:
+
 - `Ticket` - Main entity
 - `TicketStatus` - 'OPEN' | 'IN_PROGRESS' | 'DONE'
 - `Priority` - 'LOW' | 'MEDIUM' | 'HIGH'
@@ -110,6 +114,7 @@ Domain type definitions:
 ### app/globals.css
 
 Contains:
+
 - Tailwind CSS directives (@tailwind, @layer, @apply)
 - Global CSS variables
 - Font imports
@@ -129,6 +134,7 @@ npm scripts and all dependencies.
 ### .prettierrc
 
 Prettier formatting configuration:
+
 - Single quotes, semicolons, 2-space indentation
 - 100 character line width
 - Import sorting plugin: React/Next.js → @ aliases → relative paths
@@ -137,6 +143,7 @@ Prettier formatting configuration:
 ### .vscode/settings.json
 
 Editor settings for auto-formatting:
+
 - Default formatter: esbenp.prettier-vscode
 - Format on save: enabled
 - Format on paste: enabled
