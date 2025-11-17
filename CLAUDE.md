@@ -12,6 +12,8 @@ This is a Next.js 16 ticket management application built with TypeScript and Tai
 - **Language:** TypeScript 5
 - **Styling:** Tailwind CSS 4
 - **UI Library:** React 19.2.0 with Heroicons (24)
+- **Database:** SQLite + Prisma ORM v6.19.0
+- **GraphQL:** Apollo Server v5.1.0 + Apollo Client v3.12.3
 - **Testing:** Playwright (E2E tests)
 - **Linting:** ESLint 9 with Next.js configuration
 
@@ -51,6 +53,15 @@ npm run test:debug
 # Run tests for specific browser
 npm test -- --project=chromium
 npm test -- --project=firefox
+
+# Database/Prisma commands
+npm run prisma:migrate      # Create and run database migration
+npm run prisma:seed         # Seed database with sample data
+
+# Prisma utilities
+npx prisma studio          # Open Prisma Studio (GUI database browser)
+npx prisma migrate dev --name <name>  # Create new migration with custom name
+npx prisma generate        # Regenerate Prisma Client
 ```
 
 ### Auto-Formatting in ClaudeCode
@@ -116,23 +127,34 @@ Reference these before making changes to understand patterns and conventions.
 
 ### Data Flow
 
-The ticket management system uses a layered architecture:
+The ticket management system uses a layered architecture with SQLite database and GraphQL API:
 
-1. **Data Layer** (`lib/data/tickets.ts`):
-   - In-memory ticket store with sample data
-   - Query functions: `getTickets()`, `getTicketById()`, `searchTickets()`, etc.
-   - Reference data: `users`, `labels` arrays
+1. **Database Layer** (`prisma/`):
+   - SQLite database with Prisma ORM
+   - Schema: User, Ticket, Comment, Label, TicketLabel models
+   - Migrations: Version-controlled schema changes
+   - Seed script: Sample data initialization
+
+2. **Data Layer** (`lib/data/tickets.ts`):
+   - Prisma-based query functions: `getTickets()`, `getTicketById()`, `searchTickets()`, etc.
+   - Async functions for server-side data fetching
    - Read-only operations for Server Components
 
-2. **Action Layer** (`lib/actions/tickets.ts`):
+3. **GraphQL Layer** (`lib/graphql/`):
+   - **Schema** (`schema.ts`): Type definitions (User, Ticket, Comment, Label)
+   - **Resolvers** (`resolvers.ts`): Query and Mutation implementations
+   - **Endpoint** (`app/api/graphql/route.ts`): Apollo Server integration
+   - Alternative API access for frontend or external clients
+
+4. **Action Layer** (`lib/actions/tickets.ts`):
    - Server Actions (use `'use server'`)
-   - CRUD operations with validation
+   - CRUD operations with Prisma
    - Form data handling
    - Cache revalidation using `revalidatePath()`
    - Redirects after mutations using `redirect()`
 
-3. **Component Layer** (`components/`):
-   - **UI Components** (`components/ui/`): Reusable primitive components (Button, Card, Input, Select, Textarea, Badge)
+5. **Component Layer** (`components/`):
+   - **UI Components** (`components/ui/`): Reusable primitive components (Button, Card, Input, Select, Textarea, Badge, MarkdownRenderer)
    - **Ticket Components** (`components/tickets/`): Domain-specific components for ticket features
    - **Layout Components** (`components/layout/`): Navigation and page structure
 
@@ -151,7 +173,7 @@ The ticket management system uses a layered architecture:
 - Comment form submission
 - Form components that manage input state
 
-**In-Memory Data Storage**: Currently uses a module-level JavaScript array (`let tickets: Ticket[]`) in `lib/actions/tickets.ts`. This data persists during a single server process but resets between deployments/restarts. Future phases should migrate to persistent storage (database).
+**Persistent Data Storage**: All data is stored in SQLite database managed by Prisma ORM. The database persists across server restarts and is version-controlled through migrations.
 
 ### Type System
 
@@ -277,12 +299,30 @@ npm run test:debug
 # Opens Inspector tab in browser for step-by-step debugging
 ```
 
+**Adding new database fields:**
+
+1. Edit `prisma/schema.prisma` to add field
+2. Create migration: `npx prisma migrate dev --name <field_description>`
+3. Update `lib/data/tickets.ts` query functions if needed
+4. Update `lib/graphql/schema.ts` and `lib/graphql/resolvers.ts` if exposing via GraphQL
+5. Update `lib/actions/tickets.ts` if field is mutable
+
 **Adding new features:**
 
-- For data retrieval: Add query function to `lib/data/tickets.ts`
-- For mutations: Add Server Action to `lib/actions/tickets.ts` with validation
+- For data retrieval: Add query function to `lib/data/tickets.ts` (uses Prisma)
+- For mutations: Add Server Action to `lib/actions/tickets.ts` with validation (uses Prisma)
+- For GraphQL access: Update `lib/graphql/schema.ts` and `lib/graphql/resolvers.ts`
 - For UI: Create component in `components/tickets/` or `components/ui/`
 - Update tests in `e2e/ticket-crud.spec.ts` to cover new paths
+
+**Resetting database for development:**
+
+```bash
+# Delete and recreate database (dev only!)
+rm prisma/dev.db
+npm run prisma:migrate
+npm run prisma:seed
+```
 
 ## Important Notes
 
@@ -290,5 +330,8 @@ npm run test:debug
 - Main entry point: `app/page.tsx` (dashboard)
 - Tailwind auto-scans `app/` directory for class usage
 - Next.js font optimization handled automatically
-- Tests run with managed dev server - no manual server startup needed
-- Data is stored in-memory; restart loses all changes (note for future DB integration)
+- GraphQL endpoint: `http://localhost:3000/api/graphql` (Apollo Sandbox available)
+- Database is SQLite located at `prisma/dev.db` (persistent across restarts)
+- All schema changes must go through Prisma migrations (`npm run prisma:migrate`)
+- Tests run with managed dev server and automatic database reset before each test run
+- Seed script (`prisma/seed.ts`) populates initial data after migrations

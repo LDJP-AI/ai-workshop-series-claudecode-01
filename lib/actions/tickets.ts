@@ -2,40 +2,10 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getTickets, labels, users } from '@/lib/data/tickets';
-import { Comment, Priority, Ticket, TicketStatus, User } from '@/types/ticket';
-
-// In-memory storage for tickets (same as in lib/data/tickets.ts for now)
-// Note: In Phase 3, this will be replaced with proper API calls
-let tickets: Ticket[] = [];
-
-// Initialize tickets on first load
-async function initializeTickets() {
-  if (tickets.length === 0) {
-    tickets = await getTickets();
-  }
-}
-
-// Get assignee by ID
-function getAssigneeById(assigneeId: string | null): User | null {
-  if (!assigneeId) return null;
-  return users.find((u) => u.id === assigneeId) || null;
-}
-
-// Get labels from form data
-function getLabelsFromFormData(formData: FormData) {
-  const selectedLabelIds: string[] = [];
-  labels.forEach((label) => {
-    if (formData.get(`label-${label.id}`)) {
-      selectedLabelIds.push(label.id);
-    }
-  });
-  return labels.filter((l) => selectedLabelIds.includes(l.id));
-}
+import prisma from '@/lib/prisma';
+import { getLabels, getUsers } from '@/lib/data/tickets';
 
 export async function createTicket(formData: FormData) {
-  await initializeTickets();
-
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const priority = formData.get('priority') as string;
@@ -52,24 +22,43 @@ export async function createTicket(formData: FormData) {
     return { error: 'Description must be at least 10 characters' };
   }
 
-  const selectedLabels = getLabelsFromFormData(formData);
+  // Get selected labels from form data
+  const allLabels = await getLabels();
+  const selectedLabelIds: string[] = [];
+  allLabels.forEach((label) => {
+    if (formData.get(`label-${label.id}`)) {
+      selectedLabelIds.push(label.id);
+    }
+  });
 
-  const newTicket: Ticket = {
-    id: Date.now().toString(),
-    title,
-    description,
-    status: 'OPEN',
-    priority: (priority as Priority) || 'MEDIUM',
-    labels: selectedLabels,
-    assigneeId: assigneeId || null,
-    assignee: getAssigneeById(assigneeId),
-    dueDate,
-    comments: [],
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  tickets.push(newTicket);
+  const newTicket = await prisma.ticket.create({
+    data: {
+      title,
+      description,
+      status: 'OPEN',
+      priority: priority || 'MEDIUM',
+      assigneeId: assigneeId || null,
+      dueDate,
+      labels: {
+        create: selectedLabelIds.map((labelId) => ({
+          labelId,
+        })),
+      },
+    },
+    include: {
+      assignee: true,
+      labels: {
+        include: {
+          label: true,
+        },
+      },
+      comments: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
 
   revalidatePath('/tickets');
   revalidatePath('/');
@@ -77,10 +66,11 @@ export async function createTicket(formData: FormData) {
 }
 
 export async function updateTicket(id: string, formData: FormData) {
-  await initializeTickets();
+  const ticketExists = await prisma.ticket.findUnique({
+    where: { id },
+  });
 
-  const ticketIndex = tickets.findIndex((t) => t.id === id);
-  if (ticketIndex === -1) {
+  if (!ticketExists) {
     return { error: 'Ticket not found' };
   }
 
@@ -99,19 +89,48 @@ export async function updateTicket(id: string, formData: FormData) {
     return { error: 'Description must be at least 10 characters' };
   }
 
-  const selectedLabels = getLabelsFromFormData(formData);
+  // Get selected labels from form data
+  const allLabels = await getLabels();
+  const selectedLabelIds: string[] = [];
+  allLabels.forEach((label) => {
+    if (formData.get(`label-${label.id}`)) {
+      selectedLabelIds.push(label.id);
+    }
+  });
 
-  tickets[ticketIndex] = {
-    ...tickets[ticketIndex],
-    title,
-    description,
-    priority: (priority as Priority) || 'MEDIUM',
-    labels: selectedLabels,
-    assigneeId: assigneeId || null,
-    assignee: getAssigneeById(assigneeId),
-    dueDate,
-    updatedAt: new Date(),
-  };
+  // Delete existing labels and create new ones
+  await prisma.ticketLabel.deleteMany({
+    where: { ticketId: id },
+  });
+
+  const updatedTicket = await prisma.ticket.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      priority: priority || 'MEDIUM',
+      assigneeId: assigneeId || null,
+      dueDate,
+      labels: {
+        create: selectedLabelIds.map((labelId) => ({
+          labelId,
+        })),
+      },
+    },
+    include: {
+      assignee: true,
+      labels: {
+        include: {
+          label: true,
+        },
+      },
+      comments: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
 
   revalidatePath(`/tickets/${id}`);
   revalidatePath('/tickets');
@@ -119,19 +138,19 @@ export async function updateTicket(id: string, formData: FormData) {
   redirect(`/tickets/${id}`);
 }
 
-export async function updateTicketStatus(id: string, status: TicketStatus) {
-  await initializeTickets();
+export async function updateTicketStatus(id: string, status: string) {
+  const ticketExists = await prisma.ticket.findUnique({
+    where: { id },
+  });
 
-  const ticketIndex = tickets.findIndex((t) => t.id === id);
-  if (ticketIndex === -1) {
+  if (!ticketExists) {
     return { error: 'Ticket not found' };
   }
 
-  tickets[ticketIndex] = {
-    ...tickets[ticketIndex],
-    status,
-    updatedAt: new Date(),
-  };
+  await prisma.ticket.update({
+    where: { id },
+    data: { status },
+  });
 
   revalidatePath(`/tickets/${id}`);
   revalidatePath('/tickets');
@@ -141,14 +160,17 @@ export async function updateTicketStatus(id: string, status: TicketStatus) {
 }
 
 export async function deleteTicket(id: string) {
-  await initializeTickets();
+  const ticketExists = await prisma.ticket.findUnique({
+    where: { id },
+  });
 
-  const ticketIndex = tickets.findIndex((t) => t.id === id);
-  if (ticketIndex === -1) {
+  if (!ticketExists) {
     return { error: 'Ticket not found' };
   }
 
-  tickets.splice(ticketIndex, 1);
+  await prisma.ticket.delete({
+    where: { id },
+  });
 
   revalidatePath('/tickets');
   revalidatePath('/');
@@ -156,11 +178,12 @@ export async function deleteTicket(id: string) {
 }
 
 // Comment actions
-export async function addComment(ticketId: string, content: string) {
-  await initializeTickets();
+export async function addComment(ticketId: string, content: string, userId: string) {
+  const ticketExists = await prisma.ticket.findUnique({
+    where: { id: ticketId },
+  });
 
-  const ticketIndex = tickets.findIndex((t) => t.id === ticketId);
-  if (ticketIndex === -1) {
+  if (!ticketExists) {
     return { error: 'Ticket not found' };
   }
 
@@ -172,24 +195,16 @@ export async function addComment(ticketId: string, content: string) {
     return { error: 'Comment must be at least 2 characters' };
   }
 
-  // Default user for comments (in real app, would use authenticated user)
-  const currentUser: User = {
-    id: 'user1',
-    name: 'John Doe',
-    email: 'john@example.com',
-  };
-
-  const newComment: Comment = {
-    id: Date.now().toString(),
-    content,
-    authorId: currentUser.id,
-    author: currentUser,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  tickets[ticketIndex].comments.push(newComment);
-  tickets[ticketIndex].updatedAt = new Date();
+  const newComment = await prisma.comment.create({
+    data: {
+      content,
+      ticketId,
+      userId,
+    },
+    include: {
+      user: true,
+    },
+  });
 
   revalidatePath(`/tickets/${ticketId}`);
 
@@ -197,20 +212,25 @@ export async function addComment(ticketId: string, content: string) {
 }
 
 export async function deleteComment(ticketId: string, commentId: string) {
-  await initializeTickets();
+  const ticketExists = await prisma.ticket.findUnique({
+    where: { id: ticketId },
+  });
 
-  const ticketIndex = tickets.findIndex((t) => t.id === ticketId);
-  if (ticketIndex === -1) {
+  if (!ticketExists) {
     return { error: 'Ticket not found' };
   }
 
-  const commentIndex = tickets[ticketIndex].comments.findIndex((c) => c.id === commentId);
-  if (commentIndex === -1) {
+  const commentExists = await prisma.comment.findUnique({
+    where: { id: commentId },
+  });
+
+  if (!commentExists) {
     return { error: 'Comment not found' };
   }
 
-  tickets[ticketIndex].comments.splice(commentIndex, 1);
-  tickets[ticketIndex].updatedAt = new Date();
+  await prisma.comment.delete({
+    where: { id: commentId },
+  });
 
   revalidatePath(`/tickets/${ticketId}`);
 
