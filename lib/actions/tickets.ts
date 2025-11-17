@@ -8,8 +8,9 @@ import { getLabels, getUsers } from '@/lib/data/tickets';
 export async function createTicket(formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const priority = formData.get('priority') as string;
-  const assigneeId = (formData.get('assigneeId') as string) || null;
+  const priority = (formData.get('priority') as string) || 'MEDIUM';
+  const assigneeIdStr = formData.get('assigneeId') as string;
+  const assigneeId = assigneeIdStr ? parseInt(assigneeIdStr, 10) : null;
   const dueDateString = formData.get('dueDate') as string;
   const dueDate = dueDateString ? new Date(dueDateString) : null;
 
@@ -24,7 +25,7 @@ export async function createTicket(formData: FormData) {
 
   // Get selected labels from form data
   const allLabels = await getLabels();
-  const selectedLabelIds: string[] = [];
+  const selectedLabelIds: number[] = [];
   allLabels.forEach((label) => {
     if (formData.get(`label-${label.id}`)) {
       selectedLabelIds.push(label.id);
@@ -36,8 +37,8 @@ export async function createTicket(formData: FormData) {
       title,
       description,
       status: 'OPEN',
-      priority: priority || 'MEDIUM',
-      assigneeId: assigneeId || null,
+      priority: priority as 'LOW' | 'MEDIUM' | 'HIGH',
+      assigneeId,
       dueDate,
       labels: {
         create: selectedLabelIds.map((labelId) => ({
@@ -66,8 +67,10 @@ export async function createTicket(formData: FormData) {
 }
 
 export async function updateTicket(id: string, formData: FormData) {
+  const numericId = parseInt(id, 10);
+  
   const ticketExists = await prisma.ticket.findUnique({
-    where: { id },
+    where: { id: numericId },
   });
 
   if (!ticketExists) {
@@ -76,8 +79,9 @@ export async function updateTicket(id: string, formData: FormData) {
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const priority = formData.get('priority') as string;
-  const assigneeId = (formData.get('assigneeId') as string) || null;
+  const priority = (formData.get('priority') as string) || 'MEDIUM';
+  const assigneeIdStr = formData.get('assigneeId') as string;
+  const assigneeId = assigneeIdStr ? parseInt(assigneeIdStr, 10) : null;
   const dueDateString = formData.get('dueDate') as string;
   const dueDate = dueDateString ? new Date(dueDateString) : null;
 
@@ -91,7 +95,7 @@ export async function updateTicket(id: string, formData: FormData) {
 
   // Get selected labels from form data
   const allLabels = await getLabels();
-  const selectedLabelIds: string[] = [];
+  const selectedLabelIds: number[] = [];
   allLabels.forEach((label) => {
     if (formData.get(`label-${label.id}`)) {
       selectedLabelIds.push(label.id);
@@ -100,16 +104,16 @@ export async function updateTicket(id: string, formData: FormData) {
 
   // Delete existing labels and create new ones
   await prisma.ticketLabel.deleteMany({
-    where: { ticketId: id },
+    where: { ticketId: numericId },
   });
 
   const updatedTicket = await prisma.ticket.update({
-    where: { id },
+    where: { id: numericId },
     data: {
       title,
       description,
-      priority: priority || 'MEDIUM',
-      assigneeId: assigneeId || null,
+      priority: priority as 'LOW' | 'MEDIUM' | 'HIGH',
+      assigneeId,
       dueDate,
       labels: {
         create: selectedLabelIds.map((labelId) => ({
@@ -139,8 +143,10 @@ export async function updateTicket(id: string, formData: FormData) {
 }
 
 export async function updateTicketStatus(id: string, status: string) {
+  const numericId = parseInt(id, 10);
+  
   const ticketExists = await prisma.ticket.findUnique({
-    where: { id },
+    where: { id: numericId },
   });
 
   if (!ticketExists) {
@@ -148,8 +154,8 @@ export async function updateTicketStatus(id: string, status: string) {
   }
 
   await prisma.ticket.update({
-    where: { id },
-    data: { status },
+    where: { id: numericId },
+    data: { status: status as 'OPEN' | 'IN_PROGRESS' | 'DONE' },
   });
 
   revalidatePath(`/tickets/${id}`);
@@ -160,8 +166,10 @@ export async function updateTicketStatus(id: string, status: string) {
 }
 
 export async function deleteTicket(id: string) {
+  const numericId = parseInt(id, 10);
+  
   const ticketExists = await prisma.ticket.findUnique({
-    where: { id },
+    where: { id: numericId },
   });
 
   if (!ticketExists) {
@@ -169,7 +177,7 @@ export async function deleteTicket(id: string) {
   }
 
   await prisma.ticket.delete({
-    where: { id },
+    where: { id: numericId },
   });
 
   revalidatePath('/tickets');
@@ -178,9 +186,11 @@ export async function deleteTicket(id: string) {
 }
 
 // Comment actions
-export async function addComment(ticketId: string, content: string, userId: string) {
+export async function addComment(ticketId: string, content: string) {
+  const numericTicketId = parseInt(ticketId, 10);
+  
   const ticketExists = await prisma.ticket.findUnique({
-    where: { id: ticketId },
+    where: { id: numericTicketId },
   });
 
   if (!ticketExists) {
@@ -195,11 +205,22 @@ export async function addComment(ticketId: string, content: string, userId: stri
     return { error: 'Comment must be at least 2 characters' };
   }
 
+  // Get the first user as default (or create one if none exists)
+  let user = await prisma.user.findFirst();
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        name: 'System User',
+        email: 'system@example.com',
+      },
+    });
+  }
+
   const newComment = await prisma.comment.create({
     data: {
       content,
-      ticketId,
-      userId,
+      ticketId: numericTicketId,
+      userId: user.id,
     },
     include: {
       user: true,
@@ -212,8 +233,11 @@ export async function addComment(ticketId: string, content: string, userId: stri
 }
 
 export async function deleteComment(ticketId: string, commentId: string) {
+  const numericTicketId = parseInt(ticketId, 10);
+  const numericCommentId = parseInt(commentId, 10);
+  
   const ticketExists = await prisma.ticket.findUnique({
-    where: { id: ticketId },
+    where: { id: numericTicketId },
   });
 
   if (!ticketExists) {
@@ -221,7 +245,7 @@ export async function deleteComment(ticketId: string, commentId: string) {
   }
 
   const commentExists = await prisma.comment.findUnique({
-    where: { id: commentId },
+    where: { id: numericCommentId },
   });
 
   if (!commentExists) {
@@ -229,7 +253,7 @@ export async function deleteComment(ticketId: string, commentId: string) {
   }
 
   await prisma.comment.delete({
-    where: { id: commentId },
+    where: { id: numericCommentId },
   });
 
   revalidatePath(`/tickets/${ticketId}`);

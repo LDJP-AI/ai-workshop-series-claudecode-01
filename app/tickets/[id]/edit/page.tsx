@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import TicketForm from '@/components/tickets/TicketForm';
 import Card from '@/components/ui/Card';
 import { updateTicket } from '@/lib/actions/tickets';
-import { getTicketById } from '@/lib/data/tickets';
+import { getTicketById, getUsers, getLabels } from '@/lib/data/tickets';
 
 interface EditTicketPageProps {
   params: Promise<{
@@ -12,7 +12,11 @@ interface EditTicketPageProps {
 
 export default async function EditTicketPage({ params }: EditTicketPageProps) {
   const { id } = await params;
-  const ticket = await getTicketById(id);
+  const [ticket, users, labels] = await Promise.all([
+    getTicketById(parseInt(id, 10)),
+    getUsers(),
+    getLabels(),
+  ]);
 
   if (!ticket) {
     notFound();
@@ -30,7 +34,7 @@ export default async function EditTicketPage({ params }: EditTicketPageProps) {
       </div>
 
       <Card className="p-6">
-        <TicketForm action={updateTicketWithId} ticket={ticket} />
+        <TicketForm action={updateTicketWithId} ticket={ticket} users={users} labels={labels} />
       </Card>
     </main>
   );

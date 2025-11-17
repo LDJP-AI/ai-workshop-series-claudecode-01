@@ -10,7 +10,7 @@ interface TicketPageProps {
 
 export default async function TicketPage({ params }: TicketPageProps) {
   const { id } = await params;
-  const ticket = await getTicketById(id);
+  const ticket = await getTicketById(parseInt(id, 10));
 
   if (!ticket) {
     notFound();

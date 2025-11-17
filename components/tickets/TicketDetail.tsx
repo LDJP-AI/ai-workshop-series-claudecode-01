@@ -32,7 +32,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
   const handleStatusChange = async (newStatus: string) => {
     setIsUpdating(true);
     try {
-      const result = await updateTicketStatus(ticket.id, newStatus as TicketStatus);
+      const result = await updateTicketStatus(ticket.id.toString(), newStatus as TicketStatus);
       if (!result.error) {
         setStatus(newStatus as TicketStatus);
       }
@@ -46,7 +46,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
 
     setIsDeleting(true);
     try {
-      await deleteTicket(ticket.id);
+      await deleteTicket(ticket.id.toString());
     } finally {
       setIsDeleting(false);
     }
@@ -165,9 +165,9 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
           <h3 className="mb-2 text-sm font-medium text-gray-600">ラベル</h3>
           {ticket.labels.length > 0 ? (
             <div className="flex flex-wrap gap-2">
-              {ticket.labels.map((label) => (
-                <Badge key={label.id} variant="primary">
-                  {label.name}
+              {ticket.labels.map((ticketLabel) => (
+                <Badge key={ticketLabel.id} variant="primary">
+                  {ticketLabel.label.name}
                 </Badge>
               ))}
             </div>

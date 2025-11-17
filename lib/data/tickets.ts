@@ -23,7 +23,7 @@ export async function getTickets() {
 }
 
 // Fetch single ticket by ID
-export async function getTicketById(id: string) {
+export async function getTicketById(id: number) {
   return prisma.ticket.findUnique({
     where: { id },
     include: {
@@ -48,7 +48,7 @@ export async function getTicketById(id: string) {
 // Fetch tickets by status
 export async function getTicketsByStatus(status: string) {
   return prisma.ticket.findMany({
-    where: { status },
+    where: { status: status as 'OPEN' | 'IN_PROGRESS' | 'DONE' },
     include: {
       assignee: true,
       labels: {
@@ -73,8 +73,8 @@ export async function searchTickets(query: string) {
   return prisma.ticket.findMany({
     where: {
       OR: [
-        { title: { contains: query, mode: "insensitive" } },
-        { description: { contains: query, mode: "insensitive" } },
+        { title: { contains: query } },
+        { description: { contains: query } },
       ],
     },
     include: {

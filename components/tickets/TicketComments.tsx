@@ -6,13 +6,13 @@ import { Comment } from '@/types/ticket';
 
 interface TicketCommentsProps {
   comments: Comment[];
-  ticketId: string;
+  ticketId: number;
 }
 
 export default function TicketComments({ comments, ticketId }: TicketCommentsProps) {
-  const handleDeleteComment = async (commentId: string) => {
+  const handleDeleteComment = async (commentId: number) => {
     if (window.confirm('コメントを削除しますか？')) {
-      await deleteComment(ticketId, commentId);
+      await deleteComment(ticketId.toString(), commentId.toString());
     }
   };
 

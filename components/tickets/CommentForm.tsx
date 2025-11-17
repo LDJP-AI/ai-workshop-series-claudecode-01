@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import { addComment } from '@/lib/actions/tickets';
 
 interface CommentFormProps {
-  ticketId: string;
+  ticketId: number;
 }
 
 function SubmitButton() {
@@ -27,7 +27,7 @@ export default function CommentForm({ ticketId }: CommentFormProps) {
     e.preventDefault();
     setError('');
 
-    const result = await addComment(ticketId, content);
+    const result = await addComment(ticketId.toString(), content.trim());
 
     if (result.error) {
       setError(result.error);

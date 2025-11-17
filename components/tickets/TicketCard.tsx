@@ -44,9 +44,9 @@ export default function TicketCard({ ticket }: TicketCardProps) {
         <p className="mb-3 line-clamp-2 text-sm text-gray-600">{ticket.description}</p>
 
         <div className="mb-3 flex flex-wrap gap-2">
-          {ticket.labels.map((label) => (
-            <Badge key={label.id} variant="primary">
-              {label.name}
+          {ticket.labels.map((ticketLabel) => (
+            <Badge key={ticketLabel.id} variant="primary">
+              {ticketLabel.label.name}
             </Badge>
           ))}
         </div>

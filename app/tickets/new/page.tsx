@@ -1,8 +1,11 @@
 import TicketForm from '@/components/tickets/TicketForm';
 import Card from '@/components/ui/Card';
 import { createTicket } from '@/lib/actions/tickets';
+import { getUsers, getLabels } from '@/lib/data/tickets';
 
-export default function NewTicketPage() {
+export default async function NewTicketPage() {
+  const [users, labels] = await Promise.all([getUsers(), getLabels()]);
+
   return (
     <main className="container mx-auto max-w-5xl px-4 py-8">
       <div className="mb-8">
@@ -11,7 +14,7 @@ export default function NewTicketPage() {
       </div>
 
       <Card className="p-6">
-        <TicketForm action={createTicket} />
+        <TicketForm action={createTicket} users={users} labels={labels} />
       </Card>
     </main>
   );

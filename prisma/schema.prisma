@@ -13,7 +13,7 @@ datasource db {
 // Currently using package.json but can be migrated here when needed
 
 model User {
-  id    String     @id @default(cuid())
+  id    Int     @id @default(autoincrement())
   name  String
   email String     @unique
   tickets Ticket[] @relation("assignee")
@@ -23,12 +23,12 @@ model User {
 }
 
 model Ticket {
-  id          String   @id @default(cuid())
+  id          Int      @id @default(autoincrement())
   title       String
   description String
   status      Status   @default(OPEN)
   priority    Priority @default(MEDIUM)
-  assigneeId  String?
+  assigneeId  Int?
   assignee    User?    @relation("assignee", fields: [assigneeId], references: [id])
   labels      TicketLabel[]
   comments    Comment[]
@@ -38,18 +38,18 @@ model Ticket {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        Int      @id @default(autoincrement())
   content   String
-  ticketId  String
+  ticketId  Int
   ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  userId    String
+  userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Label {
-  id   String @id @default(cuid())
+  id   Int @id @default(autoincrement())
   name String @unique
   color String @default("blue")
   tickets TicketLabel[]
@@ -58,10 +58,10 @@ model Label {
 }
 
 model TicketLabel {
-  id       String @id @default(cuid())
-  ticketId String
+  id       Int @id @default(autoincrement())
+  ticketId Int
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  labelId  String
+  labelId  Int
   label    Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 

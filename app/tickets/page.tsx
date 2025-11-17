@@ -3,7 +3,6 @@ import TicketFilters from '@/components/tickets/TicketFilters';
 import TicketList from '@/components/tickets/TicketList';
 import Button from '@/components/ui/Button';
 import { searchTickets } from '@/lib/data/tickets';
-import { TicketStatus } from '@/types/ticket';
 
 interface TicketsPageProps {
   searchParams: Promise<{
@@ -16,10 +15,8 @@ interface TicketsPageProps {
 export default async function TicketsPage({ searchParams }: TicketsPageProps) {
   const params = await searchParams;
   const searchQuery = params.search || '';
-  const status = params.status ? (params.status as TicketStatus) : undefined;
-  const sortBy = params.sort || 'created';
 
-  const tickets = await searchTickets(searchQuery, status, sortBy);
+  const tickets = await searchTickets(searchQuery);
 
   return (
     <main className="container mx-auto px-4 py-8">

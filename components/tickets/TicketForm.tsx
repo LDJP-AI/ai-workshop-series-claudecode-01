@@ -7,19 +7,14 @@ import Input from '@/components/ui/Input';
 import { MarkdownRenderer } from '@/components/ui/MarkdownRenderer';
 import Select from '@/components/ui/Select';
 import Textarea from '@/components/ui/Textarea';
-import { labels as dataLabels, users as dataUsers } from '@/lib/data/tickets';
-import { Ticket } from '@/types/ticket';
-
-// ユーザー情報（未割り当てオプション付き）
-const users = [{ id: '', name: '未割り当て' }, ...dataUsers];
-
-// ラベル情報
-const labels = dataLabels;
+import { Label, Ticket, User } from '@/types/ticket';
 
 interface TicketFormProps {
   action: (formData: FormData) => void;
   ticket?: Ticket;
   isLoading?: boolean;
+  users?: User[];
+  labels?: Label[];
 }
 
 function SubmitButton({ isLoading }: { isLoading?: boolean }) {
@@ -32,7 +27,7 @@ function SubmitButton({ isLoading }: { isLoading?: boolean }) {
   );
 }
 
-export default function TicketForm({ action, ticket, isLoading }: TicketFormProps) {
+export default function TicketForm({ action, ticket, isLoading, users = [], labels = [] }: TicketFormProps) {
   const isEditing = !!ticket;
   const [description, setDescription] = useState(ticket?.description || '');
 
@@ -42,8 +37,13 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
     { value: 'HIGH', label: '高' },
   ];
 
-  const assigneeOptions = users.map((user) => ({
-    value: user.id,
+  const usersWithUnassigned = [
+    { id: 0, name: '未割り当て', email: '', createdAt: new Date(), updatedAt: new Date() },
+    ...users,
+  ];
+
+  const assigneeOptions = usersWithUnassigned.map((user) => ({
+    value: user.id.toString(),
     label: user.name,
   }));
 
