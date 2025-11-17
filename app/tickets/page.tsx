@@ -25,7 +25,7 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
     <main className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tickets</h1>
+          <h1 className="text-3xl font-bold text-gray-900">チケット一覧</h1>
           <p className="text-gray-600 mt-1">全 {tickets.length} 件のチケット</p>
         </div>
         <Link href="/tickets/new">

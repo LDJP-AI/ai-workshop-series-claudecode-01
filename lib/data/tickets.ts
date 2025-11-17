@@ -2,25 +2,25 @@ import { Ticket, TicketStatus } from '@/types/ticket';
 
 // Sample users for assignees
 const users = [
-  { id: 'user1', name: 'John Doe', email: 'john@example.com' },
-  { id: 'user2', name: 'Alice Smith', email: 'alice@example.com' },
-  { id: 'user3', name: 'Bob Johnson', email: 'bob@example.com' },
+  { id: 'user1', name: '田中太郎', email: 'tanaka@example.com' },
+  { id: 'user2', name: '佐藤花子', email: 'sato@example.com' },
+  { id: 'user3', name: '鈴木次郎', email: 'suzuki@example.com' },
 ];
 
 // Sample labels
 const labels = [
-  { id: 'label1', name: 'bug', color: 'red' },
-  { id: 'label2', name: 'feature', color: 'blue' },
-  { id: 'label3', name: 'docs', color: 'green' },
-  { id: 'label4', name: 'urgent', color: 'orange' },
+  { id: 'label1', name: 'バグ', color: 'red' },
+  { id: 'label2', name: '機能', color: 'blue' },
+  { id: 'label3', name: 'ドキュメント', color: 'green' },
+  { id: 'label4', name: '緊急', color: 'orange' },
 ];
 
 // In-memory ticket store
 const tickets: Ticket[] = [
   {
     id: '1',
-    title: 'Fix login bug',
-    description: 'Users cannot login with email address. Returns 401 error when valid credentials are provided.',
+    title: 'ログイン機能のバグ修正',
+    description: 'メールアドレスでログインできない問題が発生しています。正しいユーザー認証情報を入力しても401エラーが返される状態です。',
     status: 'OPEN',
     priority: 'HIGH',
     labels: [labels[0], labels[3]],
@@ -33,8 +33,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '2',
-    title: 'Add dark mode support',
-    description: 'Implement dark mode theme toggle in settings. Use system preference as default.',
+    title: 'ダークモード機能の追加',
+    description: '設定画面にダークモードのテーマ切り替え機能を実装します。システム設定を既定値として使用してください。',
     status: 'IN_PROGRESS',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -47,8 +47,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '3',
-    title: 'Update API documentation',
-    description: 'Add missing endpoints documentation and update examples for v2 API.',
+    title: 'API ドキュメントの更新',
+    description: '不足しているエンドポイントのドキュメント追加とv2 API用のサンプルコードを更新してください。',
     status: 'IN_PROGRESS',
     priority: 'MEDIUM',
     labels: [labels[2]],
@@ -61,8 +61,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '4',
-    title: 'Optimize database queries',
-    description: 'Profile and optimize slow queries in user dashboard. Target 50% performance improvement.',
+    title: 'データベースクエリの最適化',
+    description: 'ユーザーダッシュボードの遅いクエリをプロファイリングして最適化してください。50%のパフォーマンス向上を目標としています。',
     status: 'OPEN',
     priority: 'HIGH',
     labels: [labels[1]],
@@ -75,8 +75,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '5',
-    title: 'Add unit tests for auth module',
-    description: 'Write comprehensive unit tests for authentication module. Target 80%+ coverage.',
+    title: '認証モジュールのユニットテスト追加',
+    description: '認証モジュールの包括的なユニットテストを作成してください。カバレッジ80%以上を目標とします。',
     status: 'OPEN',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -89,8 +89,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '6',
-    title: 'Fix responsive layout on mobile',
-    description: 'Navigation menu breaks on screens smaller than 375px. Fix flexbox layout.',
+    title: 'モバイル版レスポンシブレイアウトの修正',
+    description: '375px以下の画面サイズでナビゲーションメニューが崩れています。フレックスボックスのレイアウトを修正してください。',
     status: 'DONE',
     priority: 'MEDIUM',
     labels: [labels[0]],
@@ -103,8 +103,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '7',
-    title: 'Implement email notifications',
-    description: 'Send email notifications when ticket status changes or new comment is added.',
+    title: 'メール通知機能の実装',
+    description: 'チケットのステータス変更またはコメント追加時にメール通知を送信する機能を実装してください。',
     status: 'DONE',
     priority: 'LOW',
     labels: [labels[1]],
@@ -117,8 +117,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '8',
-    title: 'Create user onboarding flow',
-    description: 'Design and implement new user onboarding wizard with guided tours.',
+    title: 'ユーザーオンボーディングフローの作成',
+    description: 'ガイドツアー機能付きの新規ユーザーオンボーディングウィザードを設計・実装してください。',
     status: 'OPEN',
     priority: 'MEDIUM',
     labels: [labels[1]],
@@ -131,8 +131,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '9',
-    title: 'Add search functionality',
-    description: 'Implement full-text search across tickets, comments, and user profiles.',
+    title: '検索機能の追加',
+    description: 'チケット、コメント、ユーザープロフィール全体にわたるフルテキスト検索を実装してください。',
     status: 'OPEN',
     priority: 'LOW',
     labels: [labels[1]],
@@ -145,8 +145,8 @@ const tickets: Ticket[] = [
   },
   {
     id: '10',
-    title: 'Setup CI/CD pipeline',
-    description: 'Configure GitHub Actions for automated testing and deployment.',
+    title: 'CI/CDパイプラインの構築',
+    description: '自動テストと自動デプロイメント用の GitHub Actions を設定してください。',
     status: 'DONE',
     priority: 'HIGH',
     labels: [labels[1]],

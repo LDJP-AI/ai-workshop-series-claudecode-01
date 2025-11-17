@@ -3,6 +3,8 @@
 import { Ticket, TicketStatus } from '@/types/ticket';
 import Link from 'next/link';
 import { useState } from 'react';
+import { ArrowLeftIcon, PencilIcon, TrashIcon, UserIcon, CalendarIcon, ExclamationIcon } from '@heroicons/react/24/outline';
+import { ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
@@ -33,7 +35,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this ticket?')) return;
+    if (!confirm('このチケットを削除してもよろしいですか？')) return;
 
     setIsDeleting(true);
     try {
@@ -54,12 +56,22 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
     HIGH: '🔴',
   };
 
+  const getPriorityLabel = (priority: string) => {
+    const priorityMap: { [key: string]: string } = {
+      LOW: '低',
+      MEDIUM: '中',
+      HIGH: '高',
+    };
+    return priorityMap[priority] || priority;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Link href="/tickets" className="text-gray-600 hover:text-gray-900">
-            ← 戻る
+          <Link href="/tickets" className="text-gray-600 hover:text-gray-900 flex items-center gap-1">
+            <ArrowLeftIcon className="w-5 h-5" />
+            <span>戻る</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">
             #{ticket.id} {ticket.title}
@@ -67,8 +79,9 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
         </div>
         <div className="flex gap-2">
           <Link href={`/tickets/${ticket.id}/edit`}>
-            <Button variant="secondary" size="sm">
-              編集
+            <Button variant="secondary" size="sm" className="flex items-center gap-1">
+              <PencilIcon className="w-4 h-4" />
+              <span>編集</span>
             </Button>
           </Link>
           <Button
@@ -76,8 +89,10 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
             size="sm"
             onClick={handleDelete}
             disabled={isDeleting}
+            className="flex items-center gap-1"
           >
-            {isDeleting ? '削除中...' : '削除'}
+            <TrashIcon className="w-4 h-4" />
+            <span>{isDeleting ? '削除中...' : '削除'}</span>
           </Button>
         </div>
       </div>
@@ -89,9 +104,9 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
             <Select
               name="status"
               options={[
-                { value: 'OPEN', label: 'Open' },
-                { value: 'IN_PROGRESS', label: 'In Progress' },
-                { value: 'DONE', label: 'Done' },
+                { value: 'OPEN', label: 'オープン' },
+                { value: 'IN_PROGRESS', label: '進行中' },
+                { value: 'DONE', label: '完了' },
               ]}
               value={status}
               onChange={(e) => handleStatusChange(e.target.value)}
@@ -101,15 +116,29 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
 
           <div>
             <h3 className="text-sm font-medium text-gray-600 mb-2">優先度</h3>
-            <span className={`text-lg font-semibold ${priorityColors[ticket.priority]}`}>
-              {priorityEmoji[ticket.priority]} {ticket.priority}
-            </span>
+            <div className="flex items-center gap-2">
+              {ticket.priority === 'HIGH' && (
+                <ExclamationCircleSolid className="w-6 h-6 text-red-600" />
+              )}
+              {ticket.priority === 'MEDIUM' && (
+                <ExclamationCircleSolid className="w-6 h-6 text-yellow-600" />
+              )}
+              {ticket.priority === 'LOW' && (
+                <ExclamationCircleSolid className="w-6 h-6 text-gray-600" />
+              )}
+              <span className={`text-lg font-semibold ${priorityColors[ticket.priority]}`}>
+                {getPriorityLabel(ticket.priority)}
+              </span>
+            </div>
           </div>
 
           <div>
             <h3 className="text-sm font-medium text-gray-600 mb-2">担当者</h3>
             {ticket.assignee ? (
-              <p className="text-gray-900">👤 {ticket.assignee.name}</p>
+              <div className="flex items-center gap-2 text-gray-900">
+                <UserIcon className="w-5 h-5 text-gray-600" />
+                <p>{ticket.assignee.name}</p>
+              </div>
             ) : (
               <p className="text-gray-500 italic">未割り当て</p>
             )}
@@ -118,9 +147,10 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
           <div>
             <h3 className="text-sm font-medium text-gray-600 mb-2">期限日</h3>
             {ticket.dueDate ? (
-              <p className="text-gray-900">
-                📅 {new Date(ticket.dueDate).toLocaleDateString('ja-JP')}
-              </p>
+              <div className="flex items-center gap-2 text-gray-900">
+                <CalendarIcon className="w-5 h-5 text-gray-600" />
+                <p>{new Date(ticket.dueDate).toLocaleDateString('ja-JP')}</p>
+              </div>
             ) : (
               <p className="text-gray-500 italic">期限なし</p>
             )}

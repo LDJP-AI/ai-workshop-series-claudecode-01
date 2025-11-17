@@ -5,6 +5,21 @@ import { redirect } from 'next/navigation';
 import { Ticket, TicketStatus, Priority, Comment, User } from '@/types/ticket';
 import { getTickets } from '@/lib/data/tickets';
 
+// Sample users
+const users = [
+  { id: 'user1', name: '田中太郎', email: 'tanaka@example.com' },
+  { id: 'user2', name: '佐藤花子', email: 'sato@example.com' },
+  { id: 'user3', name: '鈴木次郎', email: 'suzuki@example.com' },
+];
+
+// Sample labels
+const labels = [
+  { id: 'label1', name: 'バグ', color: 'red' },
+  { id: 'label2', name: '機能', color: 'blue' },
+  { id: 'label3', name: 'ドキュメント', color: 'green' },
+  { id: 'label4', name: '緊急', color: 'orange' },
+];
+
 // In-memory storage for tickets (same as in lib/data/tickets.ts for now)
 // Note: In Phase 3, this will be replaced with proper API calls
 let tickets: Ticket[] = [];
@@ -16,12 +31,32 @@ async function initializeTickets() {
   }
 }
 
+// Get assignee by ID
+function getAssigneeById(assigneeId: string | null): User | null {
+  if (!assigneeId) return null;
+  return users.find(u => u.id === assigneeId) || null;
+}
+
+// Get labels from form data
+function getLabelsFromFormData(formData: FormData) {
+  const selectedLabelIds: string[] = [];
+  labels.forEach(label => {
+    if (formData.get(`label-${label.id}`)) {
+      selectedLabelIds.push(label.id);
+    }
+  });
+  return labels.filter(l => selectedLabelIds.includes(l.id));
+}
+
 export async function createTicket(formData: FormData) {
   await initializeTickets();
 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const priority = formData.get('priority') as string;
+  const assigneeId = (formData.get('assigneeId') as string) || null;
+  const dueDateString = formData.get('dueDate') as string;
+  const dueDate = dueDateString ? new Date(dueDateString) : null;
 
   // Basic validation
   if (!title || title.length < 3) {
@@ -32,16 +67,18 @@ export async function createTicket(formData: FormData) {
     return { error: 'Description must be at least 10 characters' };
   }
 
+  const selectedLabels = getLabelsFromFormData(formData);
+
   const newTicket: Ticket = {
     id: Date.now().toString(),
     title,
     description,
     status: 'OPEN',
     priority: (priority as Priority) || 'MEDIUM',
-    labels: [],
-    assigneeId: null,
-    assignee: null,
-    dueDate: null,
+    labels: selectedLabels,
+    assigneeId: assigneeId || null,
+    assignee: getAssigneeById(assigneeId),
+    dueDate,
     comments: [],
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -65,6 +102,9 @@ export async function updateTicket(id: string, formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const priority = formData.get('priority') as string;
+  const assigneeId = (formData.get('assigneeId') as string) || null;
+  const dueDateString = formData.get('dueDate') as string;
+  const dueDate = dueDateString ? new Date(dueDateString) : null;
 
   if (!title || title.length < 3) {
     return { error: 'Title must be at least 3 characters' };
@@ -74,11 +114,17 @@ export async function updateTicket(id: string, formData: FormData) {
     return { error: 'Description must be at least 10 characters' };
   }
 
+  const selectedLabels = getLabelsFromFormData(formData);
+
   tickets[ticketIndex] = {
     ...tickets[ticketIndex],
     title,
     description,
     priority: (priority as Priority) || 'MEDIUM',
+    labels: selectedLabels,
+    assigneeId: assigneeId || null,
+    assignee: getAssigneeById(assigneeId),
+    dueDate,
     updatedAt: new Date(),
   };
 

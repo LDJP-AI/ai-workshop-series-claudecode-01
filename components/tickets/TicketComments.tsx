@@ -34,28 +34,22 @@ export default function TicketComments({
           className="border border-gray-200 rounded-lg p-4 bg-gray-50"
         >
           {/* Comment Header */}
-          <div className="flex justify-between items-start mb-2">
-            <div>
-              <p className="font-semibold text-gray-900">{comment.author.name}</p>
-              <p className="text-sm text-gray-500">{comment.author.email}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs text-gray-500">
-                {new Date(comment.createdAt).toLocaleDateString('ja-JP', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </p>
-              <button
-                onClick={() => handleDeleteComment(comment.id)}
-                className="text-xs text-red-500 hover:text-red-700 mt-1"
-              >
-                削除
-              </button>
-            </div>
+          <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
+            <p>
+              {new Date(comment.createdAt).toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
+            <button
+              onClick={() => handleDeleteComment(comment.id)}
+              className="text-red-500 hover:text-red-700"
+            >
+              削除
+            </button>
           </div>
 
           {/* Comment Content */}

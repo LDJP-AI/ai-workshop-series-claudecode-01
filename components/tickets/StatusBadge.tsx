@@ -13,9 +13,9 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
   } as const;
 
   const labels = {
-    OPEN: 'Open',
-    IN_PROGRESS: 'In Progress',
-    DONE: 'Done',
+    OPEN: 'オープン',
+    IN_PROGRESS: '進行中',
+    DONE: '完了',
   };
 
   return <Badge variant={variants[status]}>{labels[status]}</Badge>;

@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
@@ -8,10 +9,18 @@ import Button from '@/components/ui/Button';
 export default function TicketFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
+  const isComposingRef = useRef(false);
+  const debounceTimerRef = useRef<NodeJS.Timeout>();
 
   const currentStatus = searchParams.get('status') || 'ALL';
   const currentSearch = searchParams.get('search') || '';
   const currentSort = searchParams.get('sort') || 'created';
+
+  // URLの検索パラメータが変更されたときにローカルステートを同期
+  useEffect(() => {
+    setSearchValue(currentSearch);
+  }, [currentSearch]);
 
   const handleStatusChange = (status: string) => {
     const params = new URLSearchParams(searchParams);
@@ -23,7 +32,7 @@ export default function TicketFilters() {
     router.push(`/tickets?${params.toString()}`);
   };
 
-  const handleSearchChange = (search: string) => {
+  const updateSearch = (search: string) => {
     const params = new URLSearchParams(searchParams);
     if (search === '') {
       params.delete('search');
@@ -31,6 +40,30 @@ export default function TicketFilters() {
       params.set('search', search);
     }
     router.push(`/tickets?${params.toString()}`);
+  };
+
+  const handleSearchChange = (search: string) => {
+    setSearchValue(search);
+
+    // デバウンス処理：最後のキー入力から500ms後に検索実行
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      if (!isComposingRef.current) {
+        updateSearch(search);
+      }
+    }, 500);
+  };
+
+  const handleCompositionStart = () => {
+    isComposingRef.current = true;
+  };
+
+  const handleCompositionEnd = () => {
+    isComposingRef.current = false;
+    updateSearch(searchValue);
   };
 
   const handleSortChange = (sort: string) => {
@@ -53,8 +86,10 @@ export default function TicketFilters() {
           label="検索"
           name="search"
           placeholder="チケットを検索..."
-          value={currentSearch}
+          value={searchValue}
           onChange={(e) => handleSearchChange(e.target.value)}
+          onCompositionStart={handleCompositionStart}
+          onCompositionEnd={handleCompositionEnd}
         />
       </div>
 
@@ -65,7 +100,7 @@ export default function TicketFilters() {
           label="ステータス"
           name="status"
           options={[
-            { value: 'ALL', label: 'すべて' },
+            { value: 'ALL', label: 'すべて表示' },
             { value: 'OPEN', label: 'オープン' },
             { value: 'IN_PROGRESS', label: '進行中' },
             { value: 'DONE', label: '完了' },
@@ -79,10 +114,10 @@ export default function TicketFilters() {
           label="並べ替え"
           name="sort"
           options={[
-            { value: 'created', label: '作成日 (新しい順)' },
-            { value: 'created-asc', label: '作成日 (古い順)' },
-            { value: 'updated', label: '更新日 (新しい順)' },
-            { value: 'priority', label: '優先度 (高い順)' },
+            { value: 'created', label: '作成日（新しい順）' },
+            { value: 'created-asc', label: '作成日（古い順）' },
+            { value: 'updated', label: '更新日（新しい順）' },
+            { value: 'priority', label: '優先度（高い順）' },
           ]}
           value={currentSort}
           onChange={(e) => handleSortChange(e.target.value)}

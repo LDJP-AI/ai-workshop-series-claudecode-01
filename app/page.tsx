@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
+import { TicketIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { getTickets, getTicketCount, getOverdueTickets } from '@/lib/data/tickets';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -49,7 +51,7 @@ export default async function Home() {
       {overdueTickets.length > 0 && (
         <Card className="p-4 mb-8 border-red-200 bg-red-50">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">⚠️</span>
+            <ExclamationTriangleIcon className="w-8 h-8 text-red-600" />
             <div>
               <h3 className="font-semibold text-red-900">期限切れのチケット</h3>
               <p className="text-red-700 text-sm">
@@ -88,12 +90,16 @@ export default async function Home() {
         <h2 className="text-xl font-bold text-gray-900 mb-4">クイックリンク</h2>
         <div className="flex flex-wrap gap-3">
           <Link href="/tickets">
-            <Button variant="secondary" size="sm">
-              📋 すべてのチケット
+            <Button variant="secondary" size="sm" className="flex items-center gap-1">
+              <TicketIcon className="w-4 h-4" />
+              <span>すべてのチケット</span>
             </Button>
           </Link>
           <Link href="/tickets/new">
-            <Button size="sm">➕ 新規チケット作成</Button>
+            <Button size="sm" className="flex items-center gap-1">
+              <PlusIcon className="w-4 h-4" />
+              <span>新規チケット作成</span>
+            </Button>
           </Link>
         </div>
       </Card>
