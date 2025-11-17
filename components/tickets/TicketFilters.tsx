@@ -1,10 +1,10 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
-import Button from '@/components/ui/Button';
 
 export default function TicketFilters() {
   const router = useRouter();
@@ -79,7 +79,7 @@ export default function TicketFilters() {
   const hasFilters = currentStatus !== 'ALL' || currentSearch !== '';
 
   return (
-    <div className="space-y-4 mb-6">
+    <div className="mb-6 space-y-4">
       {/* 検索ボックス */}
       <div>
         <Input
@@ -94,7 +94,7 @@ export default function TicketFilters() {
       </div>
 
       {/* フィルターと並べ替え */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* ステータスフィルター */}
         <Select
           label="ステータス"
@@ -135,7 +135,7 @@ export default function TicketFilters() {
 
       {/* フィルター状態表示 */}
       {hasFilters && (
-        <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+        <div className="rounded-lg bg-blue-50 p-3 text-sm text-gray-600">
           <span>フィルター適用中:</span>
           {currentStatus !== 'ALL' && (
             <span className="ml-2">

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { getTicketById } from '@/lib/data/tickets';
 import TicketDetail from '@/components/tickets/TicketDetail';
+import { getTicketById } from '@/lib/data/tickets';
 
 interface TicketPageProps {
   params: Promise<{

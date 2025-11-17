@@ -1,12 +1,12 @@
 'use client';
 
 import { useFormStatus } from 'react-dom';
-import { Ticket } from '@/types/ticket';
-import { users as dataUsers, labels as dataLabels } from '@/lib/data/tickets';
-import Input from '@/components/ui/Input';
-import Textarea from '@/components/ui/Textarea';
-import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import Select from '@/components/ui/Select';
+import Textarea from '@/components/ui/Textarea';
+import { labels as dataLabels, users as dataUsers } from '@/lib/data/tickets';
+import { Ticket } from '@/types/ticket';
 
 // ユーザー情報（未割り当てオプション付き）
 const users = [{ id: '', name: '未割り当て' }, ...dataUsers];
@@ -74,7 +74,7 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
         rows={6}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Select
           label="優先度"
           name="priority"
@@ -98,7 +98,7 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
       />
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">ラベル</label>
+        <label className="mb-3 block text-sm font-medium text-gray-700">ラベル</label>
         <div className="space-y-2">
           {labels.map((label) => {
             const isSelected = ticket?.labels?.some((l) => l.id === label.id) ?? false;
@@ -115,14 +115,14 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
                   id={`label-${label.id}`}
                   name={`label-${label.id}`}
                   defaultChecked={isSelected}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 cursor-pointer"
+                  className="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-600"
                 />
                 <label
                   htmlFor={`label-${label.id}`}
-                  className="ml-2 text-sm text-gray-700 cursor-pointer flex items-center"
+                  className="ml-2 flex cursor-pointer items-center text-sm text-gray-700"
                 >
                   <span
-                    className={`inline-block w-2 h-2 rounded-full mr-2 ${colorClasses[label.color as keyof typeof colorClasses]}`}
+                    className={`mr-2 inline-block h-2 w-2 rounded-full ${colorClasses[label.color as keyof typeof colorClasses]}`}
                   ></span>
                   {label.name}
                 </label>

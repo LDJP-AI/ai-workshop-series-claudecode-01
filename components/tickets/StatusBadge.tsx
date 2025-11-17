@@ -1,5 +1,5 @@
-import { TicketStatus } from '@/types/ticket';
 import Badge from '@/components/ui/Badge';
+import { TicketStatus } from '@/types/ticket';
 
 interface StatusBadgeProps {
   status: TicketStatus;

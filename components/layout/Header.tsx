@@ -1,23 +1,23 @@
 import Link from 'next/link';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import Button from '@/components/ui/Button';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 export default function Header() {
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+      <div className="container mx-auto flex items-center justify-between px-4 py-4">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <CheckCircleIcon className="w-5 h-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+            <CheckCircleIcon className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold text-gray-900 hidden sm:inline">Ticket Manager</span>
+          <span className="hidden text-xl font-bold text-gray-900 sm:inline">Ticket Manager</span>
         </Link>
 
         <nav className="flex items-center gap-4">
-          <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors">
+          <Link href="/" className="text-gray-600 transition-colors hover:text-gray-900">
             ダッシュボード
           </Link>
-          <Link href="/tickets" className="text-gray-600 hover:text-gray-900 transition-colors">
+          <Link href="/tickets" className="text-gray-600 transition-colors hover:text-gray-900">
             チケット一覧
           </Link>
           <Link href="/tickets/new">

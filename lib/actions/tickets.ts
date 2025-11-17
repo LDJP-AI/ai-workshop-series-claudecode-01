@@ -2,8 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Ticket, TicketStatus, Priority, Comment, User } from '@/types/ticket';
-import { getTickets, users, labels } from '@/lib/data/tickets';
+import { getTickets, labels, users } from '@/lib/data/tickets';
+import { Comment, Priority, Ticket, TicketStatus, User } from '@/types/ticket';
 
 // In-memory storage for tickets (same as in lib/data/tickets.ts for now)
 // Note: In Phase 3, this will be replaced with proper API calls

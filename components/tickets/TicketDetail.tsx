@@ -1,23 +1,23 @@
 'use client';
 
-import { Ticket, TicketStatus } from '@/types/ticket';
 import Link from 'next/link';
 import { useState } from 'react';
+import CommentForm from '@/components/tickets/CommentForm';
+import TicketComments from '@/components/tickets/TicketComments';
+import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import Select from '@/components/ui/Select';
+import { deleteTicket, updateTicketStatus } from '@/lib/actions/tickets';
+import { Ticket, TicketStatus } from '@/types/ticket';
 import {
   ArrowLeftIcon,
+  CalendarIcon,
   PencilIcon,
   TrashIcon,
   UserIcon,
-  CalendarIcon,
 } from '@heroicons/react/24/outline';
 import { ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
-import Select from '@/components/ui/Select';
-import TicketComments from '@/components/tickets/TicketComments';
-import CommentForm from '@/components/tickets/CommentForm';
-import { updateTicketStatus, deleteTicket } from '@/lib/actions/tickets';
 
 interface TicketDetailProps {
   ticket: Ticket;
@@ -71,9 +71,9 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
         <div className="flex items-center gap-3">
           <Link
             href="/tickets"
-            className="text-gray-600 hover:text-gray-900 flex items-center gap-1"
+            className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
-            <ArrowLeftIcon className="w-5 h-5" />
+            <ArrowLeftIcon className="h-5 w-5" />
             <span>戻る</span>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">
@@ -83,7 +83,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
         <div className="flex gap-2">
           <Link href={`/tickets/${ticket.id}/edit`}>
             <Button variant="secondary" size="sm" className="flex items-center gap-1">
-              <PencilIcon className="w-4 h-4" />
+              <PencilIcon className="h-4 w-4" />
               <span>編集</span>
             </Button>
           </Link>
@@ -94,16 +94,16 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
             disabled={isDeleting}
             className="flex items-center gap-1"
           >
-            <TrashIcon className="w-4 h-4" />
+            <TrashIcon className="h-4 w-4" />
             <span>{isDeleting ? '削除中...' : '削除'}</span>
           </Button>
         </div>
       </div>
 
       <Card className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">ステータス</h3>
+            <h3 className="mb-2 text-sm font-medium text-gray-600">ステータス</h3>
             <Select
               name="status"
               options={[
@@ -118,16 +118,16 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">優先度</h3>
+            <h3 className="mb-2 text-sm font-medium text-gray-600">優先度</h3>
             <div className="flex items-center gap-2">
               {ticket.priority === 'HIGH' && (
-                <ExclamationCircleSolid className="w-6 h-6 text-red-600" />
+                <ExclamationCircleSolid className="h-6 w-6 text-red-600" />
               )}
               {ticket.priority === 'MEDIUM' && (
-                <ExclamationCircleSolid className="w-6 h-6 text-yellow-600" />
+                <ExclamationCircleSolid className="h-6 w-6 text-yellow-600" />
               )}
               {ticket.priority === 'LOW' && (
-                <ExclamationCircleSolid className="w-6 h-6 text-gray-600" />
+                <ExclamationCircleSolid className="h-6 w-6 text-gray-600" />
               )}
               <span className={`text-lg font-semibold ${priorityColors[ticket.priority]}`}>
                 {getPriorityLabel(ticket.priority)}
@@ -136,10 +136,10 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">担当者</h3>
+            <h3 className="mb-2 text-sm font-medium text-gray-600">担当者</h3>
             {ticket.assignee ? (
               <div className="flex items-center gap-2 text-gray-900">
-                <UserIcon className="w-5 h-5 text-gray-600" />
+                <UserIcon className="h-5 w-5 text-gray-600" />
                 <p>{ticket.assignee.name}</p>
               </div>
             ) : (
@@ -148,10 +148,10 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
           </div>
 
           <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">期限日</h3>
+            <h3 className="mb-2 text-sm font-medium text-gray-600">期限日</h3>
             {ticket.dueDate ? (
               <div className="flex items-center gap-2 text-gray-900">
-                <CalendarIcon className="w-5 h-5 text-gray-600" />
+                <CalendarIcon className="h-5 w-5 text-gray-600" />
                 <p>{new Date(ticket.dueDate).toLocaleDateString('ja-JP')}</p>
               </div>
             ) : (
@@ -161,7 +161,7 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
         </div>
 
         <div>
-          <h3 className="text-sm font-medium text-gray-600 mb-2">ラベル</h3>
+          <h3 className="mb-2 text-sm font-medium text-gray-600">ラベル</h3>
           {ticket.labels.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {ticket.labels.map((label) => (
@@ -177,12 +177,12 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">説明</h2>
-        <p className="text-gray-700 whitespace-pre-wrap">{ticket.description}</p>
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">説明</h2>
+        <p className="whitespace-pre-wrap text-gray-700">{ticket.description}</p>
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">詳細情報</h2>
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">詳細情報</h2>
         <div className="space-y-2 text-sm text-gray-600">
           <p>
             <span className="font-medium">作成日時:</span>{' '}
@@ -199,14 +199,14 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">
           コメント ({ticket.comments.length})
         </h2>
         <TicketComments comments={ticket.comments} ticketId={ticket.id} />
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">新規コメント</h2>
+        <h2 className="mb-4 text-2xl font-bold text-gray-900">新規コメント</h2>
         <CommentForm ticketId={ticket.id} />
       </Card>
     </div>

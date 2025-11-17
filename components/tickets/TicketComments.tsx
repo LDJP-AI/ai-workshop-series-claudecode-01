@@ -1,7 +1,7 @@
 'use client';
 
-import { Comment } from '@/types/ticket';
 import { deleteComment } from '@/lib/actions/tickets';
+import { Comment } from '@/types/ticket';
 
 interface TicketCommentsProps {
   comments: Comment[];
@@ -17,7 +17,7 @@ export default function TicketComments({ comments, ticketId }: TicketCommentsPro
 
   if (comments.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="py-8 text-center text-gray-500">
         <p>コメントがまだありません</p>
       </div>
     );
@@ -26,9 +26,9 @@ export default function TicketComments({ comments, ticketId }: TicketCommentsPro
   return (
     <div className="space-y-4">
       {comments.map((comment) => (
-        <div key={comment.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div key={comment.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
           {/* Comment Header */}
-          <div className="flex justify-between items-center mb-3 text-xs text-gray-500">
+          <div className="mb-3 flex items-center justify-between text-xs text-gray-500">
             <p>
               {new Date(comment.createdAt).toLocaleDateString('ja-JP', {
                 year: 'numeric',
@@ -47,7 +47,7 @@ export default function TicketComments({ comments, ticketId }: TicketCommentsPro
           </div>
 
           {/* Comment Content */}
-          <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>
+          <p className="whitespace-pre-wrap text-gray-700">{comment.content}</p>
         </div>
       ))}
     </div>
