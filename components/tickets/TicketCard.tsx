@@ -17,12 +17,6 @@ export default function TicketCard({ ticket }: TicketCardProps) {
     HIGH: 'text-red-600',
   };
 
-  const priorityEmoji = {
-    LOW: '🟢',
-    MEDIUM: '🟡',
-    HIGH: '🔴',
-  };
-
   const getPriorityLabel = (priority: string) => {
     const priorityMap: { [key: string]: string } = {
       LOW: '低',

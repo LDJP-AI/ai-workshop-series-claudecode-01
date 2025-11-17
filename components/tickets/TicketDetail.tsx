@@ -3,7 +3,7 @@
 import { Ticket, TicketStatus } from '@/types/ticket';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ArrowLeftIcon, PencilIcon, TrashIcon, UserIcon, CalendarIcon, ExclamationIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, PencilIcon, TrashIcon, UserIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -48,12 +48,6 @@ export default function TicketDetail({ ticket }: TicketDetailProps) {
     LOW: 'text-gray-600',
     MEDIUM: 'text-yellow-600',
     HIGH: 'text-red-600',
-  };
-
-  const priorityEmoji = {
-    LOW: '🟢',
-    MEDIUM: '🟡',
-    HIGH: '🔴',
   };
 
   const getPriorityLabel = (priority: string) => {

@@ -1,14 +1,14 @@
 import { Ticket, TicketStatus } from '@/types/ticket';
 
 // Sample users for assignees
-const users = [
+export const users = [
   { id: 'user1', name: '田中太郎', email: 'tanaka@example.com' },
   { id: 'user2', name: '佐藤花子', email: 'sato@example.com' },
   { id: 'user3', name: '鈴木次郎', email: 'suzuki@example.com' },
 ];
 
 // Sample labels
-const labels = [
+export const labels = [
   { id: 'label1', name: 'バグ', color: 'red' },
   { id: 'label2', name: '機能', color: 'blue' },
   { id: 'label3', name: 'ドキュメント', color: 'green' },

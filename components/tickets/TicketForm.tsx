@@ -1,28 +1,21 @@
 'use client';
 
 import { useFormStatus } from 'react-dom';
-import { ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid';
 import { Ticket } from '@/types/ticket';
+import { users as dataUsers, labels as dataLabels } from '@/lib/data/tickets';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import Select from '@/components/ui/Select';
 import Button from '@/components/ui/Button';
 
-// ユーザー情報
+// ユーザー情報（未割り当てオプション付き）
 const users = [
   { id: '', name: '未割り当て' },
-  { id: 'user1', name: '田中太郎' },
-  { id: 'user2', name: '佐藤花子' },
-  { id: 'user3', name: '鈴木次郎' },
+  ...dataUsers,
 ];
 
 // ラベル情報
-const labels = [
-  { id: 'label1', name: 'バグ', color: 'red' },
-  { id: 'label2', name: '機能', color: 'blue' },
-  { id: 'label3', name: 'ドキュメント', color: 'green' },
-  { id: 'label4', name: '緊急', color: 'orange' },
-];
+const labels = dataLabels;
 
 interface TicketFormProps {
   action: (formData: FormData) => void;
@@ -43,15 +36,6 @@ function SubmitButton({ isLoading }: { isLoading?: boolean }) {
 export default function TicketForm({ action, ticket, isLoading }: TicketFormProps) {
   const isEditing = !!ticket;
 
-  const PriorityOption = ({ value, label }: { value: string; label: string }) => (
-    <div className="flex items-center gap-2">
-      {value === 'HIGH' && <ExclamationCircleSolid className="w-4 h-4 text-red-600" />}
-      {value === 'MEDIUM' && <ExclamationCircleSolid className="w-4 h-4 text-yellow-600" />}
-      {value === 'LOW' && <ExclamationCircleSolid className="w-4 h-4 text-gray-600" />}
-      <span>{label}</span>
-    </div>
-  );
-
   const priorityOptions = [
     { value: 'LOW', label: '低' },
     { value: 'MEDIUM', label: '中' },
@@ -63,7 +47,7 @@ export default function TicketForm({ action, ticket, isLoading }: TicketFormProp
     label: user.name,
   }));
 
-  const formatDateForInput = (date: Date | undefined) => {
+  const formatDateForInput = (date: Date | undefined | null) => {
     if (!date) return '';
     const d = new Date(date);
     const year = d.getFullYear();

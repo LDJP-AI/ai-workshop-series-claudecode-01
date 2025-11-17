@@ -88,9 +88,9 @@ test.describe('チケット管理', () => {
       const h1Text = await h1.textContent();
       expect(h1Text).toMatch(/#1/);
 
-      // 優先度が何かしら表示されている（LOW, MEDIUM, HIGH のいずれか）
-      const priorityText = page.locator('text=/LOW|MEDIUM|HIGH/');
-      await expect(priorityText).toBeVisible();
+      // 優先度が何かしら表示されている（低, 中, 高 のいずれか）
+      const priorityContainer = page.locator('h3:has-text("優先度")').locator('..').first();
+      await expect(priorityContainer).toBeVisible();
 
       // 説明セクションが表示されている
       await expect(page.locator('h2:has-text("説明")')).toBeVisible();

@@ -11,7 +11,7 @@ export default function TicketFilters() {
   const searchParams = useSearchParams();
   const [searchValue, setSearchValue] = useState(searchParams.get('search') || '');
   const isComposingRef = useRef(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const currentStatus = searchParams.get('status') || 'ALL';
   const currentSearch = searchParams.get('search') || '';

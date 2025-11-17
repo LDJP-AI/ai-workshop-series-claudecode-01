@@ -3,22 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { Ticket, TicketStatus, Priority, Comment, User } from '@/types/ticket';
-import { getTickets } from '@/lib/data/tickets';
-
-// Sample users
-const users = [
-  { id: 'user1', name: '田中太郎', email: 'tanaka@example.com' },
-  { id: 'user2', name: '佐藤花子', email: 'sato@example.com' },
-  { id: 'user3', name: '鈴木次郎', email: 'suzuki@example.com' },
-];
-
-// Sample labels
-const labels = [
-  { id: 'label1', name: 'バグ', color: 'red' },
-  { id: 'label2', name: '機能', color: 'blue' },
-  { id: 'label3', name: 'ドキュメント', color: 'green' },
-  { id: 'label4', name: '緊急', color: 'orange' },
-];
+import { getTickets, users, labels } from '@/lib/data/tickets';
 
 // In-memory storage for tickets (same as in lib/data/tickets.ts for now)
 // Note: In Phase 3, this will be replaced with proper API calls
