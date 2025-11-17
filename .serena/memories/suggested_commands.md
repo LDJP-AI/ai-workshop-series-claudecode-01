@@ -26,6 +26,22 @@ npm run start
 
 Runs the built application in production mode. Must run `npm run build` first.
 
+### Format Code
+
+```bash
+npm run format
+```
+
+Formats all TypeScript, JavaScript, JSON, Markdown, and CSS files using Prettier. Automatically sorts imports and orders Tailwind className attributes. Auto-runs on save in ClaudeCode IDE.
+
+### Check Code Formatting
+
+```bash
+npm run format:check
+```
+
+Checks if code adheres to Prettier formatting rules without making changes. Useful in CI/CD pipelines.
+
 ### Lint Code
 
 ```bash
@@ -33,6 +49,16 @@ npm run lint
 ```
 
 Runs ESLint on the codebase. Uses Next.js ESLint configuration with core web vitals and TypeScript rules.
+
+### Run E2E Tests
+
+```bash
+npm test                           # Run all tests (Chromium + Firefox)
+npm test -- e2e/ticket-crud.spec.ts # Run specific test file
+npm run test:ui                    # Interactive UI mode
+npm run test:debug                 # Debug mode with inspector
+npm test -- --project=chromium     # Run specific browser only
+```
 
 ## Useful System Commands
 

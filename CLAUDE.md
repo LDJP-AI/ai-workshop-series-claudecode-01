@@ -27,6 +27,12 @@ npm run build
 # Start production server
 npm run start
 
+# Format code with Prettier (imports + Tailwind className ordering)
+npm run format
+
+# Check code formatting without applying changes
+npm run format:check
+
 # Run ESLint
 npm run lint
 
@@ -46,6 +52,65 @@ npm run test:debug
 npm test -- --project=chromium
 npm test -- --project=firefox
 ```
+
+### Auto-Formatting in ClaudeCode
+
+ClaudeCode IDE automatically formats code on save using Prettier. Configuration is set in `.vscode/settings.json`:
+
+- **Default formatter:** Prettier (`esbenp.prettier-vscode`)
+- **Format on save:** Enabled for all TypeScript, JavaScript, JSON, Markdown, and CSS files
+- **Format on paste:** Enabled
+- **Plugins:** Import sorting + Tailwind CSS className ordering
+
+No additional setup needed—edits will be auto-formatted when saved.
+
+## Code Navigation and Editing Strategy
+
+### Prefer Serena Symbolic Tools for Code Analysis
+
+When exploring or modifying code, **prioritize Serena MCP tools** over generic search tools. They provide semantic-aware results and are more efficient:
+
+**Symbolic Operations (Preferred):**
+
+- `find_symbol` - Locate specific functions, classes, types by name
+- `find_referencing_symbols` - Find all references to a symbol
+- `get_symbols_overview` - Get structure overview of a file
+- `replace_symbol_body` - Replace entire function/class/method body
+- `insert_before_symbol` / `insert_after_symbol` - Add code at specific locations
+- `rename_symbol` - Rename symbols across codebase
+
+**Generic Tools (When Needed):**
+
+- `Glob` - Find files by pattern (use after understanding file structure)
+- `Grep` - Search text content (when semantic search won't work)
+- `Read` - Read specific file content (only after symbolic search)
+
+### Example Workflow
+
+**Task:** Add validation to ticket creation
+
+1. Use `find_symbol` with `name_path="/createTicket"` in `lib/actions/tickets.ts` → locate function
+2. Read the function body to understand current validation
+3. Use `replace_symbol_body` to update validation logic
+4. Use `find_referencing_symbols` to check for impacts
+5. Code auto-formats on save
+
+**Not recommended:**
+
+- Reading entire files unless necessary
+- Using grep repeatedly when you can use `find_symbol`
+- Manual string editing when `replace_symbol_body` is available
+
+### Project Structure Caching
+
+Serena memories in `.serena/memories/` contain:
+
+- `codebase_structure.md` - Directory layout and layer architecture
+- `code_style_and_conventions.md` - Formatting and import rules
+- `suggested_commands.md` - Development commands
+- `project_overview.md` - Tech stack and dependencies
+
+Reference these before making changes to understand patterns and conventions.
 
 ## Project Architecture
 

@@ -6,7 +6,7 @@ ai-workshop-series-claudecode-01
 
 ## Purpose
 
-A Next.js starter project for the AI Workshop Series focused on Claude and modern web development. It serves as a template for learning and building web applications with Next.js, TypeScript, and Tailwind CSS.
+A Next.js 16 ticket management application for the AI Workshop Series focused on Claude and modern web development. Fully localized to Japanese with comprehensive E2E testing using Playwright. Serves as both a functional application and a learning template.
 
 ## Tech Stack
 
@@ -29,6 +29,11 @@ Frontend web application - a modern, server-side rendered React application with
 - react-dom: 19.2.0
 - tailwindcss: 4
 - eslint: 9 with eslint-config-next
+- @heroicons/react: 2.2.0
+- playwright: 1.56.1 (E2E testing)
+- prettier: 3.6.2 (code formatting)
+- @ianvs/prettier-plugin-sort-imports (import sorting)
+- prettier-plugin-tailwindcss (Tailwind className ordering)
 
 ## Deployment Target
 

@@ -22,12 +22,25 @@
 - Uses `eslint-config-next/typescript` for TypeScript-specific rules
 - Strict linting enforced
 
-### Ignored Paths
+### Prettier Configuration
+
+- **Config file:** `.prettierrc`
+- **Ignore file:** `.prettierignore`
+- **Plugins:**
+  - `@ianvs/prettier-plugin-sort-imports`: Organizes imports
+  - `prettier-plugin-tailwindcss`: Orders Tailwind className attributes
+- **Import order:** React/Next.js → @ aliases → relative paths → others
+- **Tailwind ordering:** Follows Tailwind's recommended class order (layout → spacing → size → colors → etc.)
+
+## Ignored Paths (ESLint + Prettier)
 
 - `.next/` - Next.js build output
 - `out/` - Static export output
 - `build/` - Build artifacts
 - `next-env.d.ts` - Auto-generated Next.js types
+- `node_modules/` - Dependencies
+- `playwright-report/` - Test reports
+- `test-results/` - Test results
 
 ## React/Next.js Conventions
 
@@ -38,14 +51,26 @@
 - **Routing:** File-based routing in `/app` directory
 - **Imports:** Use `@/` path alias for absolute imports
 
-## Code Style Guidelines
+## Code Style Guidelines (Enforced by Prettier)
 
 - Use semicolons
-- Use double quotes for strings
+- Use single quotes for strings
+- Tab width: 2 spaces
+- Trailing commas: ES5 style
+- Max line width: 100 characters
+- Arrow functions: Always use parentheses for parameters
+- End of line: LF
 - Use const/let, avoid var
 - Use arrow functions for callbacks
 - Keep components small and focused
 - Write descriptive variable and function names
+
+### Auto-Formatting
+
+All code is automatically formatted on save using Prettier with:
+- Import sorting plugin: Orders imports as React/Next.js → @ aliases → relative paths
+- Tailwind CSS plugin: Orders className attributes by Tailwind best practices
+- Configuration: `.prettierrc`, `.vscode/settings.json`, `.prettierignore`
 
 ## File Organization
 
