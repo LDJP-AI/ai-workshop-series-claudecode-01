@@ -1,38 +1,53 @@
 import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
+import dotenv from "dotenv";
 
 async function globalSetup() {
-  console.log("🔄 Preparing database for tests...");
+  console.log("🔄 Preparing test database...");
 
   try {
-    const dbPath = path.join(process.cwd(), "prisma", "dev.db");
+    // Load test environment variables (.env.test)
+    const testEnvResult = dotenv.config({ path: ".env.test" });
 
-    // Delete existing database file if it exists
-    if (fs.existsSync(dbPath)) {
-      fs.unlinkSync(dbPath);
-      console.log("✅ Deleted existing database");
+    if (testEnvResult.error) {
+      console.warn("⚠️  Could not load .env.test, using default DATABASE_URL");
     }
 
-    // Run migrations to recreate schema
+    const testDbPath = path.join(process.cwd(), "prisma", "test.db");
+
+    // Delete existing test database file if it exists
+    if (fs.existsSync(testDbPath)) {
+      fs.unlinkSync(testDbPath);
+      console.log("✅ Deleted existing test database");
+    }
+
+    // Prepare environment for test run
+    const testEnv = {
+      ...process.env,
+      NODE_ENV: "test",
+      DATABASE_URL: `file:${testDbPath}`,
+    };
+
+    // Run migrations to recreate schema (using test database)
     execSync("npx prisma migrate deploy", {
       stdio: "inherit",
       cwd: process.cwd(),
-      env: { ...process.env, NODE_ENV: "development" },
+      env: testEnv as NodeJS.ProcessEnv,
     });
 
-    console.log("✅ Database schema created");
+    console.log("✅ Test database schema created");
 
-    // Run seed script
+    // Run seed script with test environment
     execSync("npm run prisma:seed", {
       stdio: "inherit",
       cwd: process.cwd(),
-      env: { ...process.env, NODE_ENV: "development" },
+      env: testEnv as NodeJS.ProcessEnv,
     });
 
-    console.log("✅ Database seeded successfully");
+    console.log("✅ Test database seeded successfully with fixed IDs");
   } catch (error) {
-    console.error("❌ Failed to prepare database:", error);
+    console.error("❌ Failed to prepare test database:", error);
     throw error;
   }
 }

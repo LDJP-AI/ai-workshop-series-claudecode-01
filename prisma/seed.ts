@@ -2,8 +2,14 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// Check if running in test environment
+const isTestEnv = process.env.NODE_ENV === "test";
+
 async function main() {
   console.log("🌱 Seeding database...");
+  if (isTestEnv) {
+    console.log("📋 Running in TEST environment - using fixed IDs");
+  }
 
   // Delete existing data
   await prisma.ticketLabel.deleteMany();
@@ -12,48 +18,67 @@ async function main() {
   await prisma.label.deleteMany();
   await prisma.user.deleteMany();
 
-  // Create users
+  // Create users with fixed IDs for testing
+  const userData = isTestEnv
+    ? [
+        { id: 1, name: "田中太郎", email: "tanaka@example.com" },
+        { id: 2, name: "佐藤花子", email: "sato@example.com" },
+        { id: 3, name: "鈴木次郎", email: "suzuki@example.com" },
+      ]
+    : [
+        { name: "田中太郎", email: "tanaka@example.com" },
+        { name: "佐藤花子", email: "sato@example.com" },
+        { name: "鈴木次郎", email: "suzuki@example.com" },
+      ];
+
   const user1 = await prisma.user.create({
-    data: {
-      name: "田中太郎",
-      email: "tanaka@example.com",
-    },
+    data: userData[0],
   });
 
   const user2 = await prisma.user.create({
-    data: {
-      name: "佐藤花子",
-      email: "sato@example.com",
-    },
+    data: userData[1],
   });
 
   const user3 = await prisma.user.create({
-    data: {
-      name: "鈴木次郎",
-      email: "suzuki@example.com",
-    },
+    data: userData[2],
   });
 
-  // Create labels
+  // Create labels with fixed IDs for testing
+  const labelData = isTestEnv
+    ? [
+        { id: 1, name: "バグ", color: "red" },
+        { id: 2, name: "機能", color: "blue" },
+        { id: 3, name: "ドキュメント", color: "green" },
+        { id: 4, name: "緊急", color: "orange" },
+      ]
+    : [
+        { name: "バグ", color: "red" },
+        { name: "機能", color: "blue" },
+        { name: "ドキュメント", color: "green" },
+        { name: "緊急", color: "orange" },
+      ];
+
   const labelBug = await prisma.label.create({
-    data: { name: "バグ", color: "red" },
+    data: labelData[0],
   });
 
   const labelFeature = await prisma.label.create({
-    data: { name: "機能", color: "blue" },
+    data: labelData[1],
   });
 
   const labelDoc = await prisma.label.create({
-    data: { name: "ドキュメント", color: "green" },
+    data: labelData[2],
   });
 
   const labelUrgent = await prisma.label.create({
-    data: { name: "緊急", color: "orange" },
+    data: labelData[3],
   });
 
-  // Create tickets
+  // Create tickets with fixed IDs for testing
+  const ticket1Data = isTestEnv ? { id: 1 } : {};
   const ticket1 = await prisma.ticket.create({
     data: {
+      ...ticket1Data,
       title: "ログイン機能のバグ修正",
       description: `## 問題の説明
 
@@ -84,8 +109,10 @@ async function main() {
     },
   });
 
+  const ticket2Data = isTestEnv ? { id: 2 } : {};
   const ticket2 = await prisma.ticket.create({
     data: {
+      ...ticket2Data,
       title: "ダークモード機能の追加",
       description: `## 実装要件
 
@@ -112,8 +139,10 @@ async function main() {
     },
   });
 
+  const ticket3Data = isTestEnv ? { id: 3 } : {};
   const ticket3 = await prisma.ticket.create({
     data: {
+      ...ticket3Data,
       title: "API ドキュメントの更新",
       description: `## ドキュメント更新内容
 
@@ -147,8 +176,10 @@ const data = await response.json();
     },
   });
 
+  const ticket4Data = isTestEnv ? { id: 4 } : {};
   const ticket4 = await prisma.ticket.create({
     data: {
+      ...ticket4Data,
       title: "データベースクエリの最適化",
       description: `## パフォーマンス改善タスク
 
@@ -175,8 +206,10 @@ const data = await response.json();
     },
   });
 
+  const ticket5Data = isTestEnv ? { id: 5 } : {};
   const ticket5 = await prisma.ticket.create({
     data: {
+      ...ticket5Data,
       title: "認証モジュールのユニットテスト追加",
       description: `## テストカバレッジの拡張
 
@@ -209,8 +242,10 @@ const data = await response.json();
     },
   });
 
+  const ticket6Data = isTestEnv ? { id: 6 } : {};
   const ticket6 = await prisma.ticket.create({
     data: {
+      ...ticket6Data,
       title: "モバイル版レスポンシブレイアウトの修正",
       description: `## レイアウトのバグ修正
 
