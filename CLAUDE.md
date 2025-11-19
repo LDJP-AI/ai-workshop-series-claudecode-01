@@ -215,42 +215,81 @@ redirect(`/tickets/${id}`); // Navigate to detail
 ### Test Framework Details
 
 - **Framework:** Playwright 1.56.1 (E2E testing)
-- **Test File:** `e2e/ticket-crud.spec.ts`
-- **Browsers:** Chromium and Firefox (16 tests per browser = 32 total)
+- **Test Directory:** `e2e/` (organized by page)
+- **Browsers:** Chromium and Firefox
 - **Configuration:** `playwright.config.ts`
 - **Dev Server:** Auto-started during test runs
+- **Test Helpers:** `playwright/testHelper.ts` (data creation utilities)
 
-### Test Coverage
+### Test File Organization
 
-The test suite validates the complete ticket lifecycle with Japanese UI text:
+Tests are split by page for better maintainability:
 
-1. **チケット作成** (Ticket Creation) - 4 tests
-   - Navigate to new ticket creation page
-   - Create ticket with valid data
-   - Title validation (< 3 chars rejected)
-   - Description validation (< 10 chars rejected)
+- **`e2e/dashboard.spec.ts`** - Dashboard page tests
+  - Display ticket count statistics
+  - Display recent tickets section
 
-2. **チケット詳細とステータス変更** (Ticket Details & Status Change) - 3 tests
-   - Display ticket details with all fields
-   - Change ticket status (OPEN → IN_PROGRESS, etc.)
-   - Display edit/delete action buttons
+- **`e2e/ticket-creation.spec.ts`** - Ticket creation page tests
+  - Navigate to new ticket creation page
+  - Create ticket with valid data
+  - Title validation (< 3 chars rejected)
+  - Description validation (< 10 chars rejected)
 
-3. **チケット編集** (Ticket Editing) - 3 tests
-   - Navigate to edit page with pre-filled form
-   - Update ticket data successfully
-   - Cancel button restores previous page
+- **`e2e/ticket-detail.spec.ts`** - Ticket detail, editing, and comments
+  - Display ticket details with all fields
+  - Change ticket status
+  - Display edit/delete action buttons
+  - Navigate to edit page with pre-filled form
+  - Update ticket data
+  - Cancel button behavior
+  - Comment creation and deletion
 
-4. **チケット一覧** (Ticket List) - 2 tests
-   - Display list of all tickets
-   - Navigate to ticket details from list
+- **`e2e/ticket-list.spec.ts`** - Ticket list, search, and filters
+  - Display list of all tickets
+  - Navigate to ticket details from list
+  - Search by keyword
+  - Filter by status
+  - Sort by various criteria
+  - Reset filters
 
-5. **ナビゲーション** (Navigation) - 2 tests
-   - Header navigation between home/tickets/new
-   - New ticket button from home page
+- **`e2e/navigation.spec.ts`** - Navigation between pages
+  - Header navigation between home/tickets/new
+  - New ticket button from home page
 
-6. **ダッシュボード** (Dashboard) - 2 tests
-   - Display ticket count statistics
-   - Display recent tickets section
+### Test File Naming Convention
+
+**File naming:** `[page-name].spec.ts`
+
+**Test structure within files:**
+```typescript
+test.describe('[ページ名]', () => {
+  test.beforeEach(async ({ page }) => {
+    // Page setup (common for all tests in file)
+  });
+
+  test.beforeAll(async () => {
+    // Test data creation (runs once before all tests in describe block)
+    // Use testHelper functions: createSimpleTicket(), createTestUsers(), etc.
+  });
+
+  test('specific test case', async ({ page }) => {
+    // Test implementation
+  });
+});
+```
+
+### Test Data Management
+
+- **Test Helpers:** Located in `playwright/testHelper.ts`
+- **Functions:**
+  - `createTestUsers()` - Create/retrieve test users
+  - `createTestLabels()` - Create/retrieve test labels
+  - `createSimpleTicket()` - Create basic ticket for testing
+  - `clearTestData()` - Clear all test data
+- **Database:** Isolated SQLite test database (`prisma/test.db`) recreated for each test run
+- **Seed:** Minimal seed data (users + labels only) in `prisma/seed.ts`
+
+**Important:** Each test file imports only the helpers it needs to avoid unused import warnings.
 
 ### Important Test Guidelines
 

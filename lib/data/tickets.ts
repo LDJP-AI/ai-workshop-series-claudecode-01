@@ -69,12 +69,37 @@ export async function getTicketsByStatus(status: string) {
 }
 
 // Search tickets
-export async function searchTickets(query: string) {
-  return prisma.ticket.findMany({
+export async function searchTickets(
+  query: string,
+  status?: string,
+  sort?: string
+) {
+  // ステータスフィルターの設定
+  const statusFilter =
+    status && status !== 'ALL'
+      ? { status: status as any }
+      : {};
+
+  // ソートの設定（優先度以外）
+  let orderBy: any = { createdAt: 'desc' };
+  if (sort === 'created-asc') {
+    orderBy = { createdAt: 'asc' };
+  } else if (sort === 'updated') {
+    orderBy = { updatedAt: 'desc' };
+  }
+
+  const tickets = await prisma.ticket.findMany({
     where: {
-      OR: [
-        { title: { contains: query } },
-        { description: { contains: query } },
+      AND: [
+        query
+          ? {
+              OR: [
+                { title: { contains: query } },
+                { description: { contains: query } },
+              ],
+            }
+          : {},
+        statusFilter,
       ],
     },
     include: {
@@ -90,10 +115,24 @@ export async function searchTickets(query: string) {
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: sort === 'priority' ? { createdAt: 'desc' } : orderBy,
   });
+
+  // 優先度順のソート（アプリケーション層）
+  if (sort === 'priority') {
+    const priorityOrder = { HIGH: 0, MEDIUM: 1, LOW: 2 };
+    return tickets.sort((a, b) => {
+      const aPriority = priorityOrder[a.priority as keyof typeof priorityOrder] ?? 3;
+      const bPriority = priorityOrder[b.priority as keyof typeof priorityOrder] ?? 3;
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;
+      }
+      // 優先度が同じ場合は作成日順（新しい順）
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
+
+  return tickets;
 }
 
 // Get ticket count by status

@@ -15,8 +15,10 @@ interface TicketsPageProps {
 export default async function TicketsPage({ searchParams }: TicketsPageProps) {
   const params = await searchParams;
   const searchQuery = params.search || '';
+  const status = params.status || 'ALL';
+  const sort = params.sort || 'created';
 
-  const tickets = await searchTickets(searchQuery);
+  const tickets = await searchTickets(searchQuery, status, sort);
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -37,7 +39,9 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
       ) : (
         <div className="py-12 text-center">
           <p className="text-lg text-gray-500">チケットが見つかりません</p>
-          <p className="mt-2 text-sm text-gray-400">フィルターを変更してお試しください</p>
+          <p className="mt-2 text-sm text-gray-400">
+            フィルターを変更してお試しください
+          </p>
         </div>
       )}
     </main>
