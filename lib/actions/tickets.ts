@@ -2,8 +2,8 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { getLabels } from '@/lib/data/tickets';
 import prisma from '@/lib/prisma';
-import { getLabels, getUsers } from '@/lib/data/tickets';
 
 export async function createTicket(formData: FormData) {
   const title = formData.get('title') as string;
@@ -68,7 +68,7 @@ export async function createTicket(formData: FormData) {
 
 export async function updateTicket(id: string, formData: FormData) {
   const numericId = parseInt(id, 10);
-  
+
   const ticketExists = await prisma.ticket.findUnique({
     where: { id: numericId },
   });
@@ -144,7 +144,7 @@ export async function updateTicket(id: string, formData: FormData) {
 
 export async function updateTicketStatus(id: string, status: string) {
   const numericId = parseInt(id, 10);
-  
+
   const ticketExists = await prisma.ticket.findUnique({
     where: { id: numericId },
   });
@@ -167,7 +167,7 @@ export async function updateTicketStatus(id: string, status: string) {
 
 export async function deleteTicket(id: string) {
   const numericId = parseInt(id, 10);
-  
+
   const ticketExists = await prisma.ticket.findUnique({
     where: { id: numericId },
   });
@@ -188,7 +188,7 @@ export async function deleteTicket(id: string) {
 // Comment actions
 export async function addComment(ticketId: string, content: string) {
   const numericTicketId = parseInt(ticketId, 10);
-  
+
   const ticketExists = await prisma.ticket.findUnique({
     where: { id: numericTicketId },
   });
@@ -235,7 +235,7 @@ export async function addComment(ticketId: string, content: string) {
 export async function deleteComment(ticketId: string, commentId: string) {
   const numericTicketId = parseInt(ticketId, 10);
   const numericCommentId = parseInt(commentId, 10);
-  
+
   const ticketExists = await prisma.ticket.findUnique({
     where: { id: numericTicketId },
   });

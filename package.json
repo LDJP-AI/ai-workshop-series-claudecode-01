@@ -13,6 +13,7 @@
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed"
   },
   "dependencies": {

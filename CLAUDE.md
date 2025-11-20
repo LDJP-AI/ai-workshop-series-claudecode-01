@@ -261,6 +261,7 @@ Tests are split by page for better maintainability:
 **File naming:** `[page-name].spec.ts`
 
 **Test structure within files:**
+
 ```typescript
 test.describe('[ページ名]', () => {
   test.beforeEach(async ({ page }) => {
@@ -286,7 +287,7 @@ test.describe('[ページ名]', () => {
   - `createTestLabels()` - Create/retrieve test labels
   - `createSimpleTicket()` - Create basic ticket for testing
   - `clearTestData()` - Clear all test data
-- **Database:** Isolated SQLite test database (`prisma/test.db`) recreated for each test run
+- **Database:** Isolated SQLite test database (`prisma/db/test.db`) recreated for each test run
 - **Seed:** Minimal seed data (users + labels only) in `prisma/seed.ts`
 
 **Important:** Each test file imports only the helpers it needs to avoid unused import warnings.

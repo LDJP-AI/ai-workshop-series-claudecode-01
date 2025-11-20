@@ -41,6 +41,7 @@ npm run prisma:migrate
 ```
 
 **初回実行時の動作:**
+
 - SQLite データベース (`prisma/dev.db`) を作成
 - スキーマに基づいてテーブルを作成
 - Prisma Client を自動生成
@@ -54,6 +55,7 @@ npm run prisma:seed
 ```
 
 **シードされるデータ:**
+
 - 3 人のユーザー (田中太郎、佐藤花子、鈴木次郎)
 - 4 つのラベル (バグ、機能、ドキュメント、緊急)
 - 6 つのサンプルチケット (マークダウン形式の詳細説明付き)
@@ -70,13 +72,13 @@ npm run dev
 
 ### マイグレーション関連コマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `npm run prisma:migrate` | 新規マイグレーションを作成して実行 |
-| `npx prisma migrate deploy` | 既存マイグレーションを適用 |
-| `npx prisma db seed` | サンプルデータをシード |
-| `npx prisma studio` | Prisma Studio (GUI) を起動 |
-| `npx prisma generate` | Prisma Client を再生成 |
+| コマンド                    | 説明                               |
+| --------------------------- | ---------------------------------- |
+| `npm run prisma:migrate`    | 新規マイグレーションを作成して実行 |
+| `npx prisma migrate deploy` | 既存マイグレーションを適用         |
+| `npx prisma db seed`        | サンプルデータをシード             |
+| `npx prisma studio`         | Prisma Studio (GUI) を起動         |
+| `npx prisma generate`       | Prisma Client を再生成             |
 
 ### Prisma Studio でのデータベース確認
 
@@ -95,6 +97,7 @@ npx prisma migrate dev --name <migration_name>
 ```
 
 例:
+
 ```bash
 npx prisma migrate dev --name add_status_field
 ```
@@ -206,7 +209,6 @@ npm run test:debug
 
 # 特定のブラウザでテストを実行
 npm test -- --project=chromium
-npm test -- --project=firefox
 
 # 特定のテストファイルを実行
 npm test -- e2e/ticket-crud.spec.ts
@@ -391,7 +393,7 @@ warn The configuration property `package.json#prisma` is deprecated and will be 
 ```typescript
 // prisma.config.ts の例
 export default {
-  seed: "tsx prisma/seed.ts",
+  seed: 'tsx prisma/seed.ts',
 };
 ```
 
@@ -406,6 +408,7 @@ export default {
 **原因**: マイグレーションが実行されていない
 
 **解決方法**:
+
 ```bash
 npm run prisma:migrate
 npm run prisma:seed
@@ -416,6 +419,7 @@ npm run prisma:seed
 **原因**: データベースファイルが存在しない
 
 **解決方法**:
+
 ```bash
 npm run prisma:migrate
 ```
