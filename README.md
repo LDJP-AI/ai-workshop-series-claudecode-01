@@ -1,9 +1,25 @@
-# AI Workshop Series - Ticket Management Application
+# 🎓 AI Workshop Series - ClaudeCode マスターコース
 
-このプロジェクトは、Claude Code ワークショップシリーズ用の **Next.js 16 チケット管理アプリケーション** です。TypeScript、Tailwind CSS、Prisma ORM、GraphQL を組み合わせた、フル機能の実例を提供します。
+このプロジェクトは、**Claude と現代的な Web 開発プラクティス** に焦点を当てた **AI Workshop Series** のメインプロジェクトです。
+
+**Next.js 16** チケット管理アプリケーションを題材に、5つのセッションを通じて ClaudeCode を習得できます。
 
 **言語**: 完全に日本語ローカライズ
-**テスト**: Playwright による E2E テスト（32 テスト）
+**テスト**: Playwright による E2E テスト（Chromium）
+
+## 📚 ワークショップシリーズ
+
+👉 **[セッション一覧・詳細ガイドはこちら](./sessions/README.md)**
+
+5つのセッション（Session 01-05）で段階的に ClaudeCode を習得：
+
+1. **Session 01**: ClaudeCode の基本体験
+2. **Session 02**: コンテキスト活用した機能追加
+3. **Session 03**: プランモードで複雑な機能開発
+4. **Session 04**: ドキュメント生成
+5. **Session 05**: 応用編（自由実装 + 高度な機能）
+
+**このプロジェクトを進める前に、[セッションガイド](./sessions/README.md)を必ず読んでください。**
 
 ## 技術スタック
 
@@ -241,7 +257,7 @@ mutation AddComment($ticketId: String!, $content: String!, $userId: String!) {
 
 | コマンド                                | 説明                                   |
 | --------------------------------------- | -------------------------------------- |
-| `npm test`                              | 全テスト実行（Chromium + Firefox）     |
+| `npm test`                              | 全テスト実行（Chromium）               |
 | `npm run test:ui`                       | UI モード（対話的にテスト実行）        |
 | `npm run test:debug`                    | デバッグモード（Inspector タブで実行） |
 | `npm test -- --project=chromium`        | Chromium のみで実行                    |
