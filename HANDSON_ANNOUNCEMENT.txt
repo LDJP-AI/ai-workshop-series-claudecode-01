@@ -1,6 +1,7 @@
 Claude Code ハンズオン開催のお知らせ
 
 開催日時: 12/05(金) 17:30-18:30
+形式: **オンライン開催**
 
 ---
 
@@ -10,7 +11,28 @@ Claude Code ハンズオン開催のお知らせ
 
 学習できること：
 ・Claude Code の基本操作と機能（コード分析、生成、編集、プランモード）
+・5つのセッションで段階的に習得（詳細は下記参照）
+
+セッション内容：
+👉 https://github.com/LDJP-AI/ai-workshop-series-claudecode-01/tree/main/sessions
+
 ※既にClaudeCodeを使ったことある人は知ってることが多いかも
+
+---
+
+この勉強会を通じて得られること
+
+このハンズオンは **参加者が手を動かしながら学ぶ** 形式です：
+
+・実装を通じた実践的な習得（「読む」ではなく「やる」）
+・ClaudeCode の実機操作体験
+・問題が発生した際の対処方法を学べる
+・講師によるリアルタイムサポート（質問対応・ガイダンス）
+
+**講師の役割：** 問題解決やガイダンスをサポートします。
+参加者が主体的に進め、詰まったときにサポートする形式です。
+
+---
 
 対象者：Claude Code 初心者〜初級者向け
 
@@ -18,34 +40,18 @@ Claude Code ハンズオン開催のお知らせ
 
 事前準備（必須）
 
-1. 環境確認
+詳細な事前準備手順は、GitHub リポジトリの README を確認してください：
 
-以下のコマンドで必要なツールがインストール済みか確認してください。
+👉 https://github.com/LDJP-AI/ai-workshop-series-claudecode-01?tab=readme-ov-file#%EF%B8%8F-%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99%E5%BF%85%E9%A0%88
 
-  node --version
-  npm --version
-  git --version
-  claude doctor
+このページに以下の内容が記載されています：
+- 必要なツールのインストール確認
+- 必要な環境の一覧
+- Claude Code のインストール方法
+- アプリケーションの動作確認（localhost:3000 でダッシュボード表示まで）
+- トラブルシューティング
 
-2. 必要な環境
-
-・Node.js 22 以上
-・npm
-・Git
-・テキストエディタ（VSCode 推奨）
-  ・VSCodeのClaudeCode拡張（https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code）
-・ブラウザ（Chrome）
-・Claude Code
-
-3. Claude Code のインストール
-
-Claude Code をまだインストールしていない場合は、以下のリンクを参照してインストールしてください。
-
-  https://code.claude.com/docs/ja/setup#標準インストール
-
-インストール後は、以下のコマンドで環境が正しくセットアップされているか確認してください。
-
-  claude doctor
+**最も重要：** 本ハンズオン前に、上記の README の手順に従い、アプリケーションが localhost:3000 で正常に起動することを確認してください。
 
 ---
 
@@ -58,10 +64,13 @@ Claude Code をまだインストールしていない場合は、以下のリ�
 
 ハンズオン資料について
 
-このハンズオンの資料は、ハンズオン終了後に公開予定です。
-参加できない方も、公開された資料を使って自習することで、Claude Code での開発方法を学ぶことができます。
+ハンズオン資料は既に GitHub で公開されています：
 
-注：後日自習する場合、Claude Code を使用するには以下のいずれかが必要になります。
+👉 https://github.com/LDJP-AI/ai-workshop-series-claudecode-01
+
+参加できない方も、ハンズオン前から自習することができます。なんなら今日からでも始められます。
+
+注：自習する場合、Claude Code を使用するには以下のいずれかが必要になります。
 
 ・Anthropic API キー：https://console.anthropic.com/ から取得
 ・AWS Bedrock API キー(or IAMユーザー)
@@ -71,14 +80,3 @@ Claude Code をまだインストールしていない場合は、以下のリ�
 質問や問題がある場合
 
 準備中に問題が発生した場合は、このスレッドに返信してください。
-
-主なトラブル対応：
-
-・Node.js のインストール方法がわからない
-  https://nodejs.org/ja/download
-
-・VSCode のインストール方法がわからない
-  https://code.visualstudio.com/download
-
-・Claude Code のインストール方法がわからない
-  https://code.claude.com/docs/ja/setup#標準インストール
