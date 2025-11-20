@@ -336,6 +336,33 @@ Claudeが修正
 
 ---
 
+## 💾 セッション完了後のコミット
+
+**Session 03 で実装したカレンダー機能を Git に保存しておきましょう。**
+
+```bash
+# 変更を確認
+git status
+
+# 実装を追加
+git add .
+
+# Session 03 完了時点をコミット
+git commit -m "feat: Session 03 complete - calendar feature implementation
+
+- Implemented /calendar page with calendar UI
+- Added month/week view switching
+- Integrated task deadline display on calendar
+- Enabled task creation from calendar date clicks
+- Created comprehensive E2E tests
+- All tests passing"
+
+# 進捗確認
+git log --oneline
+```
+
+---
+
 ## 📌 このセッションで学んだこと
 
 - 📋 **プランモード：** Shift+Tab で有効化。複雑な機能を計画立てる

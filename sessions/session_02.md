@@ -147,6 +147,31 @@ npm test -- e2e/ticket-list.spec.ts
 
 ---
 
+## 💾 セッション完了後のコミット
+
+**Session 02 で実装した機能を Git に保存しておきましょう。**
+
+```bash
+# 変更を確認
+git status
+
+# 実装を追加
+git add .
+
+# Session 02 完了時点をコミット
+git commit -m "feat: Session 02 complete - priority filter implementation
+
+- Implemented ticket priority dropdown filter
+- Added filtering logic to /tickets page
+- Created E2E tests for priority filter
+- All tests passing"
+
+# 進捗確認
+git log --oneline
+```
+
+---
+
 ## 📌 次のセッションへ向けて
 
 次のセッション（Session 03）では、**より複雑な機能開発** に挑戦します：
