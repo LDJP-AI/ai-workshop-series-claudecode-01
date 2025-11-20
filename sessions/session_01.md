@@ -27,7 +27,7 @@ ClaudeCode に `/init` コマンドを実行して、プロジェクト全体を
 ### 💬 参加者の操作
 
 ```
-1. ClaudeCode チャットを開く
+1. ターミナルで claude を入力(ClaudeCode チャットを開く)
    ↓
 2. /init コマンドを実行
    ↓
