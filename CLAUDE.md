@@ -1,378 +1,398 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは、Claude Code がこのリポジトリでコード作業をする際のガイダンスを提供します。
 
-## Project Overview
+## プロジェクト概要
 
-This is a Next.js 16 ticket management application built with TypeScript and Tailwind CSS. It serves as a workshop project for the AI Workshop Series focused on Claude and modern web development practices. The application is fully localized to Japanese and includes comprehensive E2E tests.
+これは **Claude と現代的な Web 開発プラクティス** に焦点を当てた AI Workshop Series のワークショッププロジェクトです。完全に日本語ローカライズされており、包括的な E2E テストが含まれています。
 
-**Tech Stack:**
+**技術スタック：**
 
-- **Framework:** Next.js 16.0.3 with App Router
-- **Language:** TypeScript 5
-- **Styling:** Tailwind CSS 4
-- **UI Library:** React 19.2.0 with Heroicons (24)
-- **Database:** SQLite + Prisma ORM v6.19.0
-- **GraphQL:** Apollo Server v5.1.0 + Apollo Client v3.12.3
-- **Testing:** Playwright (E2E tests)
-- **Linting:** ESLint 9 with Next.js configuration
+| カテゴリ              | 技術                   | バージョン     |
+| --------------------- | ---------------------- | -------------- |
+| **フレームワーク**    | Next.js (App Router)   | 16.0.3         |
+| **言語**              | TypeScript             | 5              |
+| **UI フレームワーク** | React + Heroicons      | 19.2.0 + 2.2.0 |
+| **スタイリング**      | Tailwind CSS           | 4              |
+| **データベース**      | SQLite + Prisma ORM    | 6.19.0         |
+| **GraphQL**           | Apollo Server + Client | 5.1.0 + 3.12.3 |
+| **テスト**            | Playwright (E2E)       | 1.56.1         |
+| **コード品質**        | ESLint + Prettier      | 9 + 3.6.2      |
 
-## Development Commands
+## 開発コマンド
+
+### サーバー操作
 
 ```bash
-# Start development server (runs on http://localhost:3000)
-npm run dev
-
-# Build production application
-npm run build
-
-# Start production server
-npm run start
-
-# Format code with Prettier (imports + Tailwind className ordering)
-npm run format
-
-# Check code formatting without applying changes
-npm run format:check
-
-# Run ESLint
-npm run lint
-
-# Run all E2E tests (Chromium + Firefox, 32 tests total)
-npm test
-
-# Run specific test file
-npm test -- e2e/ticket-crud.spec.ts
-
-# Run tests in interactive UI mode
-npm run test:ui
-
-# Run tests in debug mode with inspector
-npm run test:debug
-
-# Run tests for specific browser
-npm test -- --project=chromium
-npm test -- --project=firefox
-
-# Database/Prisma commands
-npm run prisma:migrate      # Create and run database migration
-npm run prisma:seed         # Seed database with sample data
-
-# Prisma utilities
-npx prisma studio          # Open Prisma Studio (GUI database browser)
-npx prisma migrate dev --name <name>  # Create new migration with custom name
-npx prisma generate        # Regenerate Prisma Client
+npm run dev          # 開発サーバー起動（http://localhost:3000）
+npm run build        # 本番用ビルド
+npm run start        # ビルド済みアプリ起動（本番モード）
 ```
 
-### Auto-Formatting in ClaudeCode
+### コード品質
 
-ClaudeCode IDE automatically formats code on save using Prettier. Configuration is set in `.vscode/settings.json`:
+```bash
+npm run format       # Prettier でコード整形（import sort + Tailwind 順序）
+npm run format:check # フォーマット確認（修正なし）
+npm run lint         # ESLint 実行
+```
 
-- **Default formatter:** Prettier (`esbenp.prettier-vscode`)
-- **Format on save:** Enabled for all TypeScript, JavaScript, JSON, Markdown, and CSS files
-- **Format on paste:** Enabled
-- **Plugins:** Import sorting + Tailwind CSS className ordering
+### E2E テスト（Playwright）
 
-No additional setup needed—edits will be auto-formatted when saved.
+```bash
+npm test                              # 全テスト実行（Chromium + Firefox）
+npm run test:ui                       # UI モード（対話的実行）
+npm run test:debug                    # デバッグモード（Inspector タブ）
+npm test -- --project=chromium        # Chromium のみ
+npm test -- --project=firefox         # Firefox のみ
+npm test -- e2e/ticket-list.spec.ts   # 特定テストファイル実行
+npx playwright show-report            # テストレポート表示
+```
 
-## Code Navigation and Editing Strategy
+### データベース・Prisma
 
-### Prefer Serena Symbolic Tools for Code Analysis
+```bash
+npm run prisma:migrate        # マイグレーション作成・実行
+npm run prisma:seed           # シードスクリプト実行
+npm run prisma:studio         # Prisma Studio GUI 起動
+npx prisma generate           # Prisma Client 再生成
+npx prisma migrate dev --name <name>  # 名前付きマイグレーション
+```
 
-When exploring or modifying code, **prioritize Serena MCP tools** over generic search tools. They provide semantic-aware results and are more efficient:
+### ClaudeCode IDE での自動整形
 
-**Symbolic Operations (Preferred):**
+ClaudeCode IDE は Prettier を使用して自動的にコードを整形します（`.vscode/settings.json` で設定）：
 
-- `find_symbol` - Locate specific functions, classes, types by name
-- `find_referencing_symbols` - Find all references to a symbol
-- `get_symbols_overview` - Get structure overview of a file
-- `replace_symbol_body` - Replace entire function/class/method body
-- `insert_before_symbol` / `insert_after_symbol` - Add code at specific locations
-- `rename_symbol` - Rename symbols across codebase
+- **デフォルトフォーマッター:** Prettier（`esbenp.prettier-vscode`）
+- **保存時自動整形:** 有効（TypeScript, JavaScript, JSON, Markdown, CSS）
+- **ペースト時自動整形:** 有効
+- **プラグイン:** Import ソート + Tailwind CSS className 順序付け
 
-**Generic Tools (When Needed):**
+セットアップ不要—ファイル保存時に自動で整形されます。
 
-- `Glob` - Find files by pattern (use after understanding file structure)
-- `Grep` - Search text content (when semantic search won't work)
-- `Read` - Read specific file content (only after symbolic search)
+## コード操作戦略
 
-### Example Workflow
+### Serena シンボリックツールを優先
 
-**Task:** Add validation to ticket creation
+コード操作時は、汎用検索より **Serena MCP ツール** を優先します。セマンティック対応で効率的です：
 
-1. Use `find_symbol` with `name_path="/createTicket"` in `lib/actions/tickets.ts` → locate function
-2. Read the function body to understand current validation
-3. Use `replace_symbol_body` to update validation logic
-4. Use `find_referencing_symbols` to check for impacts
-5. Code auto-formats on save
+**シンボリック操作（推奨）:**
 
-**Not recommended:**
+- `find_symbol` - 関数・クラス・型を名前で検索
+- `find_referencing_symbols` - シンボルの参照箇所を全て検索
+- `get_symbols_overview` - ファイルの構造概要
+- `replace_symbol_body` - 関数・クラス・メソッド本体全体を置換
+- `insert_before_symbol` / `insert_after_symbol` - 特定位置にコード追加
+- `rename_symbol` - シンボル全体をリネーム
 
-- Reading entire files unless necessary
-- Using grep repeatedly when you can use `find_symbol`
-- Manual string editing when `replace_symbol_body` is available
+**汎用ツール（必要時）:**
 
-### Project Structure Caching
+- `Glob` - ファイルパターンで検索
+- `Grep` - テキスト内容で検索
+- `Read` - ファイル内容を読む
 
-Serena memories in `.serena/memories/` contain:
+### 操作ワークフロー例
 
-- `codebase_structure.md` - Directory layout and layer architecture
-- `code_style_and_conventions.md` - Formatting and import rules
-- `suggested_commands.md` - Development commands
-- `project_overview.md` - Tech stack and dependencies
+**タスク:** チケット作成の検証ロジック追加
 
-Reference these before making changes to understand patterns and conventions.
+1. `find_symbol` で `lib/actions/tickets.ts` の `createTicket` 関数を検索
+2. 関数本体を読んで現在の検証ロジックを理解
+3. `replace_symbol_body` で検証ロジックを更新
+4. `find_referencing_symbols` で影響範囲を確認
+5. 保存時に自動整形
 
-## Project Architecture
+**非推奨:**
 
-### Data Flow
+- 必要でない限りファイル全体を読む
+- `find_symbol` で検索できるのに grep を繰り返す
+- `replace_symbol_body` があるのに手動で文字列編集する
 
-The ticket management system uses a layered architecture with SQLite database and GraphQL API:
+### Serena メモリで構造情報をキャッシュ
 
-1. **Database Layer** (`prisma/`):
-   - SQLite database with Prisma ORM
-   - Schema: User, Ticket, Comment, Label, TicketLabel models
-   - Migrations: Version-controlled schema changes
-   - Seed script: Sample data initialization
+`.serena/memories/` には以下の情報があります：
 
-2. **Data Layer** (`lib/data/tickets.ts`):
-   - Prisma-based query functions: `getTickets()`, `getTicketById()`, `searchTickets()`, etc.
-   - Async functions for server-side data fetching
-   - Read-only operations for Server Components
+- `codebase_structure.md` - ディレクトリレイアウトと層別アーキテクチャ
+- `code_style_and_conventions.md` - フォーマットとインポートルール
+- `suggested_commands.md` - 開発コマンド
+- `project_overview.md` - 技術スタックと依存関係
 
-3. **GraphQL Layer** (`lib/graphql/`):
-   - **Schema** (`schema.ts`): Type definitions (User, Ticket, Comment, Label)
-   - **Resolvers** (`resolvers.ts`): Query and Mutation implementations
-   - **Endpoint** (`app/api/graphql/route.ts`): Apollo Server integration
-   - Alternative API access for frontend or external clients
+変更前にこれらを参照してパターンと規約を理解してください。
 
-4. **Action Layer** (`lib/actions/tickets.ts`):
-   - Server Actions (use `'use server'`)
-   - CRUD operations with Prisma
-   - Form data handling
-   - Cache revalidation using `revalidatePath()`
-   - Redirects after mutations using `redirect()`
+## プロジェクトアーキテクチャ
 
-5. **Component Layer** (`components/`):
-   - **UI Components** (`components/ui/`): Reusable primitive components (Button, Card, Input, Select, Textarea, Badge, MarkdownRenderer)
-   - **Ticket Components** (`components/tickets/`): Domain-specific components for ticket features
-   - **Layout Components** (`components/layout/`): Navigation and page structure
+### データフロー
 
-### Key Architectural Patterns
+チケット管理システムは、SQLite データベースと GraphQL API を組み合わせた階層型アーキテクチャを使用します：
 
-**Server Components by Default**: All components are Server Components unless they need client-side interactivity. This includes:
+1. **データベース層** (`prisma/`)：
+   - SQLite + Prisma ORM
+   - スキーマ: User、Ticket、Comment、Label、TicketLabel モデル
+   - マイグレーション: バージョン管理されたスキーマ変更
+   - シードスクリプト: サンプルデータ初期化
 
-- Dashboard page (home) - all queries run server-side
-- Ticket list page - server-side data fetching
-- Ticket detail page - server-side rendering of ticket data
-- Edit forms - Server Actions handle submissions
+2. **データ層** (`lib/data/tickets.ts`)：
+   - Prisma ベースのクエリ関数: `getTickets()`、`getTicketById()`、`searchTickets()` など
+   - サーバーサイドデータ取得用の非同期関数
+   - Server Components 向けの読み取り専用操作
 
-**Client Components**: Use `'use client'` only for:
+3. **GraphQL 層** (`lib/graphql/`)：
+   - **スキーマ** (`schema.ts`)：型定義（User、Ticket、Comment、Label）
+   - **リゾルバー** (`resolvers.ts`)：Query・Mutation 実装
+   - **エンドポイント** (`app/api/graphql/route.ts`)：Apollo Server 統合
+   - フロントエンドまたは外部クライアント向けの代替 API アクセス
 
-- Status change dropdown (user interaction needed)
-- Comment form submission
-- Form components that manage input state
+4. **アクション層** (`lib/actions/tickets.ts`)：
+   - Server Actions（`'use server'` ディレクティブ）
+   - Prisma を使用した CRUD 操作
+   - フォームデータ処理
+   - `revalidatePath()` によるキャッシュ再検証
+   - `redirect()` によるミューテーション後のリダイレクト
 
-**Persistent Data Storage**: All data is stored in SQLite database managed by Prisma ORM. The database persists across server restarts and is version-controlled through migrations.
+5. **コンポーネント層** (`components/`)：
+   - **UI コンポーネント** (`components/ui/`)：再利用可能なプリミティブ
+   - **チケットコンポーネント** (`components/tickets/`)：ドメイン固有
+   - **レイアウトコンポーネント** (`components/layout/`)：ナビゲーション・ページ構造
 
-### Type System
+### 主要なアーキテクチャパターン
 
-All types defined in `types/ticket.ts`:
+**デフォルトはサーバーコンポーネント**: すべてのコンポーネントはサーバーコンポーネントです。クライアント側操作が必要なときのみ `'use client'` を使用：
 
-- `Ticket`: Main entity with CRUD-managed properties
+- ダッシュボード（ホーム）- 全クエリがサーバーサイド
+- チケット一覧 - サーバーサイドデータ取得
+- チケット詳細 - サーバーサイドレンダリング
+- 編集フォーム - Server Actions が送信処理
+
+**クライアントコンポーネント**: `'use client'` が必要な場合：
+
+- ステータス変更ドロップダウン（ユーザー操作）
+- コメントフォーム送信
+- 入力状態を管理するフォームコンポーネント
+
+**永続的データストレージ**: すべてのデータは Prisma ORM で管理される SQLite データベースに保存。マイグレーションによってバージョン管理されます。
+
+### 型システム
+
+すべての型は `types/ticket.ts` で定義：
+
+- `Ticket`: メインエンティティ（CRUD 管理プロパティ）
 - `TicketStatus`: `'OPEN' | 'IN_PROGRESS' | 'DONE'`
 - `Priority`: `'LOW' | 'MEDIUM' | 'HIGH'`
-- `User`, `Label`, `Comment`: Supporting entities
+- `User`、`Label`、`Comment`: サポートエンティティ
 
-### Validation Rules
+### 検証ルール
 
-**Ticket Creation/Update**:
+**チケット作成・更新時**:
 
-- Title: minimum 3 characters
-- Description: minimum 10 characters
-- Priority: defaults to 'MEDIUM' if not specified
-- Assignee: optional (can be null)
-- Due Date: optional (can be null)
+- タイトル: 最小 3 文字
+- 説明: 最小 10 文字
+- 優先度: 指定なしの場合は 'MEDIUM'
+- 担当者: 任意（null 可）
+- 期限: 任意（null 可）
 
-**Comment Actions**:
+**コメント操作**:
 
-- Content: minimum 2 characters
+- コンテンツ: 最小 2 文字
 
-### Data Revalidation Strategy
+### キャッシュ再検証戦略
 
-After mutations, the system revalidates cached data for affected routes:
+ミューテーション後、関連ルートのキャッシュを再検証：
 
 ```typescript
-// Example from updateTicket()
-revalidatePath(`/tickets/${id}`); // Detail page
-revalidatePath('/tickets'); // List page
-revalidatePath('/'); // Home dashboard
-redirect(`/tickets/${id}`); // Navigate to detail
+// updateTicket() の例
+revalidatePath(`/tickets/${id}`); // 詳細ページ
+revalidatePath('/tickets'); // 一覧ページ
+revalidatePath('/'); // ダッシュボード
+redirect(`/tickets/${id}`); // 詳細ページへ遷移
 ```
 
-## Testing
+## テスト
 
-### Test Framework Details
+### テストフレームワークの詳細
 
-- **Framework:** Playwright 1.56.1 (E2E testing)
-- **Test Directory:** `e2e/` (organized by page)
-- **Browsers:** Chromium and Firefox
-- **Configuration:** `playwright.config.ts`
-- **Dev Server:** Auto-started during test runs
-- **Test Helpers:** `playwright/testHelper.ts` (data creation utilities)
+| 項目                   | 値                                     |
+| ---------------------- | -------------------------------------- |
+| **フレームワーク**     | Playwright 1.56.1                      |
+| **テストディレクトリ** | `e2e/`（ページ別に整理）               |
+| **ブラウザ**           | Chromium と Firefox                    |
+| **設定ファイル**       | `playwright.config.ts`                 |
+| **デバッグモード**     | `npm run test:debug` で Inspector 付き |
+| **UI モード**          | `npm run test:ui` で対話的実行         |
 
-### Test File Organization
+### テストファイル構成
 
-Tests are split by page for better maintainability:
+ページ別にテストを分割して管理性を向上：
 
-- **`e2e/dashboard.spec.ts`** - Dashboard page tests
-  - Display ticket count statistics
-  - Display recent tickets section
+| ファイル                    | テスト対象     | 主なテスト項目                                       |
+| --------------------------- | -------------- | ---------------------------------------------------- |
+| **dashboard.spec.ts**       | ダッシュボード | チケット数統計、最新チケット表示                     |
+| **ticket-creation.spec.ts** | 新規作成       | フォーム入力、タイトル検証、説明検証                 |
+| **ticket-detail.spec.ts**   | 詳細・編集     | 詳細表示、ステータス変更、コメント操作、編集フォーム |
+| **ticket-list.spec.ts**     | 一覧・検索     | 一覧表示、検索、ステータスフィルター、ソート         |
+| **navigation.spec.ts**      | ナビゲーション | ヘッダーナビゲーション、ページ遷移                   |
 
-- **`e2e/ticket-creation.spec.ts`** - Ticket creation page tests
-  - Navigate to new ticket creation page
-  - Create ticket with valid data
-  - Title validation (< 3 chars rejected)
-  - Description validation (< 10 chars rejected)
+### テスト実行ガイド
 
-- **`e2e/ticket-detail.spec.ts`** - Ticket detail, editing, and comments
-  - Display ticket details with all fields
-  - Change ticket status
-  - Display edit/delete action buttons
-  - Navigate to edit page with pre-filled form
-  - Update ticket data
-  - Cancel button behavior
-  - Comment creation and deletion
+```bash
+# 全テスト実行（両ブラウザ）
+npm test
 
-- **`e2e/ticket-list.spec.ts`** - Ticket list, search, and filters
-  - Display list of all tickets
-  - Navigate to ticket details from list
-  - Search by keyword
-  - Filter by status
-  - Sort by various criteria
-  - Reset filters
+# 特定ファイルのテスト
+npm test -- e2e/dashboard.spec.ts
 
-- **`e2e/navigation.spec.ts`** - Navigation between pages
-  - Header navigation between home/tickets/new
-  - New ticket button from home page
+# 対話的 UI モード
+npm run test:ui
 
-### Test File Naming Convention
+# デバッグモード（Inspector で実行）
+npm run test:debug
 
-**File naming:** `[page-name].spec.ts`
+# レポート表示
+npx playwright show-report
+```
 
-**Test structure within files:**
+### テストファイルの命名規則と構造
+
+**ファイル命名:** `[page-name].spec.ts`
+
+**ファイル内のテスト構造:**
 
 ```typescript
 test.describe('[ページ名]', () => {
   test.beforeEach(async ({ page }) => {
-    // Page setup (common for all tests in file)
+    // ページセットアップ（全テスト共通）
   });
 
   test.beforeAll(async () => {
-    // Test data creation (runs once before all tests in describe block)
-    // Use testHelper functions: createSimpleTicket(), createTestUsers(), etc.
+    // テストデータ作成（describe ブロック実行前に 1 度だけ）
+    // testHelper 関数を使用: createSimpleTicket()、createTestUsers() など
   });
 
-  test('specific test case', async ({ page }) => {
-    // Test implementation
+  test('特定のテストケース', async ({ page }) => {
+    // テスト実装
   });
 });
 ```
 
-### Test Data Management
+### テストデータ管理
 
-- **Test Helpers:** Located in `playwright/testHelper.ts`
-- **Functions:**
-  - `createTestUsers()` - Create/retrieve test users
-  - `createTestLabels()` - Create/retrieve test labels
-  - `createSimpleTicket()` - Create basic ticket for testing
-  - `clearTestData()` - Clear all test data
-- **Database:** Isolated SQLite test database (`prisma/db/test.db`) recreated for each test run
-- **Seed:** Minimal seed data (users + labels only) in `prisma/seed.ts`
+- **テストヘルパー:** `playwright/testHelper.ts` に配置
+- **主要関数:**
+  - `createTestUsers()` - テストユーザーを作成・取得
+  - `createTestLabels()` - テストラベルを作成・取得
+  - `createSimpleTicket()` - 基本チケット作成
+  - `clearTestData()` - テストデータを全削除
+- **テスト DB:** 各テスト実行時に独立した SQLite テストデータベース（`prisma/db/test.db`）を再作成
+- **シード:** 最小限のシードデータ（ユーザー + ラベルのみ）
 
-**Important:** Each test file imports only the helpers it needs to avoid unused import warnings.
+**重要:** 各テストファイルは必要なヘルパーのみインポート（未使用インポート警告回避）
 
-### Important Test Guidelines
+### テストガイドライン（Playwright）
 
-**Avoid Playwright Strict Mode Violations** - Always use specific selectors:
+**Strict Mode 違反を避ける—常に具体的なセレクターを使用:**
 
 ```javascript
-// ❌ Bad - matches multiple elements
+// ❌ 悪い例 - 複数要素にマッチ
 page.locator('text=説明');
 
-// ✅ Good - element type + text
+// ✅ 良い例 - 要素タイプ + テキスト
 page.locator('h2:has-text("説明")');
 
-// ✅ Good - semantic locators
+// ✅ 良い例 - セマンティックロケーター
 page.getByRole('heading', { name: '説明' });
 page.getByRole('button', { name: 'ステータス変更' });
 ```
 
-**Best Practices:**
+**ベストプラクティス:**
 
-- Use semantic locators (`getByRole`, `getByLabel`, `getByText` with element type)
-- Use `:has-text()` pseudo-selector when text appears in multiple places
-- Never use generic text-only locators
-- Test both success paths and validation errors
-- Cross-browser testing ensures Chromium and Firefox compatibility
+- セマンティックロケーター使用（`getByRole`、`getByLabel`、`getByText`）
+- テキストが複数箇所に出現する場合は `:has-text()` 疑似セレクター使用
+- 汎用テキストのみのロケーターを使用しない
+- 成功と検証エラーの両方をテスト
+- Chromium と Firefox の両ブラウザで動作確認
 
-## Routes
+## ルート一覧
 
-- `/` - Dashboard (home page with statistics and recent tickets)
-- `/tickets` - Ticket list page with filtering
-- `/tickets/new` - Create new ticket form
-- `/tickets/[id]` - View ticket details with comments
-- `/tickets/[id]/edit` - Edit ticket form
+| ルート               | 説明                                 |
+| -------------------- | ------------------------------------ |
+| `/`                  | ダッシュボード（統計・最新チケット） |
+| `/tickets`           | チケット一覧（フィルター・検索）     |
+| `/tickets/new`       | チケット新規作成フォーム             |
+| `/tickets/[id]`      | チケット詳細表示（コメント付き）     |
+| `/tickets/[id]/edit` | チケット編集フォーム                 |
 
-## Common Development Tasks
+## よくある開発タスク
 
-**Running a single test:**
+### 新しいデータベースフィールドを追加
 
-```bash
-npm test -- --grep "チケット作成"  # Run by test name pattern
+1. `prisma/schema.prisma` でフィールド追加
+2. マイグレーション作成: `npm run prisma:migrate`
+3. 必要に応じて `lib/data/tickets.ts` のクエリ関数を更新
+4. GraphQL で公開する場合は `lib/graphql/schema.ts` と `lib/graphql/resolvers.ts` を更新
+5. ミュータブルなフィールドの場合は `lib/actions/tickets.ts` を更新
+
+### 新機能を追加
+
+**データ取得:** `lib/data/tickets.ts` にクエリ関数追加
+
+```typescript
+export async function getTicketsByLabel(labelId: string) {
+  // Prisma クエリ
+}
 ```
 
-**Debugging test failures:**
+**ミューテーション:** `lib/actions/tickets.ts` に Server Action 追加
 
-```bash
-npm run test:debug
-# Opens Inspector tab in browser for step-by-step debugging
+```typescript
+'use server';
+export async function updateTicketLabel(id: string, labelId: string) {
+  // Prisma 更新 + revalidatePath
+}
 ```
 
-**Adding new database fields:**
+**GraphQL:** `lib/graphql/schema.ts` と `lib/graphql/resolvers.ts` を更新
 
-1. Edit `prisma/schema.prisma` to add field
-2. Create migration: `npx prisma migrate dev --name <field_description>`
-3. Update `lib/data/tickets.ts` query functions if needed
-4. Update `lib/graphql/schema.ts` and `lib/graphql/resolvers.ts` if exposing via GraphQL
-5. Update `lib/actions/tickets.ts` if field is mutable
+**UI:** `components/tickets/` または `components/ui/` にコンポーネント作成
 
-**Adding new features:**
+**テスト:** `e2e/` の対応するテストファイルを更新
 
-- For data retrieval: Add query function to `lib/data/tickets.ts` (uses Prisma)
-- For mutations: Add Server Action to `lib/actions/tickets.ts` with validation (uses Prisma)
-- For GraphQL access: Update `lib/graphql/schema.ts` and `lib/graphql/resolvers.ts`
-- For UI: Create component in `components/tickets/` or `components/ui/`
-- Update tests in `e2e/ticket-crud.spec.ts` to cover new paths
-
-**Resetting database for development:**
+### 開発用にデータベースをリセット
 
 ```bash
-# Delete and recreate database (dev only!)
+# ⚠️ 開発環境でのみ使用！
 rm prisma/dev.db
 npm run prisma:migrate
 npm run prisma:seed
 ```
 
-## Important Notes
+## 重要な注意事項
 
-- Auto-reload enabled during development (`npm run dev`)
-- Main entry point: `app/page.tsx` (dashboard)
-- Tailwind auto-scans `app/` directory for class usage
-- Next.js font optimization handled automatically
-- GraphQL endpoint: `http://localhost:3000/api/graphql` (Apollo Sandbox available)
-- Database is SQLite located at `prisma/dev.db` (persistent across restarts)
-- All schema changes must go through Prisma migrations (`npm run prisma:migrate`)
-- Tests run with managed dev server and automatic database reset before each test run
-- Seed script (`prisma/seed.ts`) populates initial data after migrations
-- **Prisma v7 Migration Note**: Package.json's `prisma.seed` property is deprecated. This warning is harmless; full migration to `prisma.config.ts` planned for future updates
+### 開発中の動作
+
+- **自動リロード有効:** `npm run dev` 実行中はファイル変更時に自動リロード
+- **メインエントリーポイント:** `app/page.tsx`（ダッシュボード）
+- **Tailwind CSS スキャン:** `app/` ディレクトリ内の CSS クラスを自動検出
+- **フォント最適化:** Next.js が自動で処理
+
+### データベース
+
+- **SQLite ファイル:** `prisma/dev.db`（サーバー再起動後も永続）
+- **スキーマ変更:** すべてマイグレーション経由（`npm run prisma:migrate`）
+- **シード:** マイグレーション後に `prisma/seed.ts` が実行される
+
+### GraphQL
+
+- **エンドポイント:** `http://localhost:3000/api/graphql`
+- **IDE:** Apollo Sandbox が自動で起動（GraphQL クエリ・デバッグに使用可）
+
+### テスト
+
+- **自動 DB リセット:** テスト実行前に `prisma/db/test.db` を再作成
+- **開発サーバー:** テスト実行時に自動で起動・停止
+- **テストデータ:** `playwright/testHelper.ts` のヘルパーで管理
+
+### Prisma v7 への移行に関する注意
+
+```
+warn: The configuration property `package.json#prisma` is deprecated...
+```
+
+この警告は **無害**です。`package.json` 内の `prisma.seed` プロパティは Prisma v7 では非推奨ですが、将来の完全移行時に `prisma.config.ts` への統合を予定しています。現在のところ、すべての機能は正常に動作します。
