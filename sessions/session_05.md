@@ -336,8 +336,8 @@ MCP サーバーは 3 つの接続方法をサポート：
 #### 📚 学習リソース
 
 - **公式ドキュメント:** [ClaudeCode MCP](https://code.claude.com/docs/ja/mcp)
-- **MCP サーバー一覧:** [MCP Public Servers](https://modelcontextprotocol.io/servers)
-- **カスタム MCP 作成ガイド:** [Building an MCP Server](https://modelcontextprotocol.io/docs/tutorials/building-mcp-server)
+- **MCP サーバー一覧:** [MCP Public Servers](https://mcpservers.org/)
+- **カスタム MCP 作成ガイド:** [Building an MCP Server](https://modelcontextprotocol.io/docs/develop/build-server)
 
 #### 🎯 チャレンジ
 
@@ -617,7 +617,7 @@ Session 05 で学んだことを、今後の開発に活かすための指標を
 #### MCP
 
 - [MCP Official](https://modelcontextprotocol.io/)
-- [Awesome MCP](https://github.com/punkpeye/awesome-mcp-servers)
+- [Awesome MCP](https://mcpservers.org/)
 
 #### hook・自動化
 
