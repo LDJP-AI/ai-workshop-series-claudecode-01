@@ -1,0 +1,83 @@
+Claude Code ハンズオン開催のお知らせ
+
+開催日時: 12/05(金) 17:30-18:30
+
+---
+
+ハンズオン内容
+
+このハンズオンでは、最新の Web 開発技術を組み合わせた実践的なプロジェクトを通じて、Claude Code を使った効率的な開発方法を学びます。
+
+学習できること：
+・Claude Code の基本操作と機能（コード分析、生成、編集、プランモード）
+※既にClaudeCodeを使ったことある人は知ってることが多いかも
+
+対象者：Claude Code 初心者〜初級者向け
+
+---
+
+事前準備（必須）
+
+1. 環境確認
+
+以下のコマンドで必要なツールがインストール済みか確認してください。
+
+  node --version
+  npm --version
+  git --version
+  claude doctor
+
+2. 必要な環境
+
+・Node.js 22 以上
+・npm
+・Git
+・テキストエディタ（VSCode 推奨）
+・ブラウザ（Chrome）
+・Claude Code
+
+3. Claude Code のインストール
+
+Claude Code をまだインストールしていない場合は、以下のリンクを参照してインストールしてください。
+
+  https://code.claude.com/docs/ja/setup#標準インストール
+
+インストール後は、以下のコマンドで環境が正しくセットアップされているか確認してください。
+
+  claude doctor
+
+---
+
+参加予定の方へ
+
+参加予定の方は、このスレッドに :hand: リアクションをしてください。
+(Claude API のレート制限を考慮して、参加人数を把握しておきたいです)
+
+---
+
+ハンズオン資料について
+
+このハンズオンの資料は、ハンズオン終了後に公開予定です。
+参加できない方も、公開された資料を使って自習することで、Claude Code での開発方法を学ぶことができます。
+
+注：後日自習する場合、Claude Code を使用するには以下のいずれかが必要になります。
+
+・Anthropic API キー：https://console.anthropic.com/ から取得
+・AWS Bedrock API キー(or IAMユーザー)
+
+---
+
+質問や問題がある場合
+
+準備中に問題が発生した場合は、このスレッドに返信してください。
+
+主なトラブル対応：
+
+・Node.js のインストール方法がわからない
+  https://nodejs.org/ja/download
+
+・VSCode のインストール方法がわからない
+  https://code.visualstudio.com/download
+
+・Claude Code のインストール方法がわからない
+  https://code.claude.com/docs/ja/setup#標準インストール
