@@ -41,7 +41,7 @@ npm run dev
 ### 1. リポジトリのクローンと依存関係のインストール
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/LDJP-AI/ai-workshop-series-claudecode-01
 cd ai-workshop-series-claudecode-01
 npm ci
 ```
