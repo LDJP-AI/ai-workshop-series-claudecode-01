@@ -44,7 +44,4 @@ playwright/.auth/
 /lib/generated/prisma
 
 # Database files
-db/dev.db
-db/dev.db-journal
-db/test.db
-db/test.db-journal
+prisma/db

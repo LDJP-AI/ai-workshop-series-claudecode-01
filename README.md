@@ -28,7 +28,6 @@ npm ci
 
 # 2. データベースをセットアップ（マイグレーション + シード）
 npm run prisma:migrate
-npm run prisma:seed
 
 # 3. 開発サーバーを起動
 npm run dev
@@ -73,14 +72,7 @@ npm run prisma:migrate
 - SQLite データベース (`prisma/dev.db`) を作成
 - スキーマに基づいてテーブルを作成
 - Prisma Client を自動生成
-
-#### サンプルデータのシード
-
-チケット作成時のテスト用に初期データを投入します：
-
-```bash
-npm run prisma:seed
-```
+- チケット作成時のテスト用に初期データを投入します(シード)
 
 **シードされるデータ：**
 
