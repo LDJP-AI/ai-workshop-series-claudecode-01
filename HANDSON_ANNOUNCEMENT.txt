@@ -33,6 +33,7 @@ Claude Code ハンズオン開催のお知らせ
 ・npm
 ・Git
 ・テキストエディタ（VSCode 推奨）
+  ・VSCodeのClaudeCode拡張（https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code）
 ・ブラウザ（Chrome）
 ・Claude Code
 
