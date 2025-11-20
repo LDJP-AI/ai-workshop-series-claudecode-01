@@ -1,40 +1,40 @@
+import { resolvers } from './resolvers';
 import {
-  GraphQLSchema,
-  GraphQLObjectType,
+  GraphQLBoolean,
+  GraphQLEnumType,
   GraphQLField,
-  GraphQLString,
   GraphQLID,
+  GraphQLInputObjectType,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLEnumType,
-  GraphQLInt,
-  GraphQLInputObjectType,
-  GraphQLBoolean,
-} from "graphql";
-import { resolvers } from "./resolvers";
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+} from 'graphql';
 
 // Enums
 const StatusEnum = new GraphQLEnumType({
-  name: "Status",
+  name: 'Status',
   values: {
-    OPEN: { value: "OPEN" },
-    IN_PROGRESS: { value: "IN_PROGRESS" },
-    DONE: { value: "DONE" },
+    OPEN: { value: 'OPEN' },
+    IN_PROGRESS: { value: 'IN_PROGRESS' },
+    DONE: { value: 'DONE' },
   },
 });
 
 const PriorityEnum = new GraphQLEnumType({
-  name: "Priority",
+  name: 'Priority',
   values: {
-    LOW: { value: "LOW" },
-    MEDIUM: { value: "MEDIUM" },
-    HIGH: { value: "HIGH" },
+    LOW: { value: 'LOW' },
+    MEDIUM: { value: 'MEDIUM' },
+    HIGH: { value: 'HIGH' },
   },
 });
 
 // Types
 export const UserType = new GraphQLObjectType({
-  name: "User",
+  name: 'User',
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLID) },
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -47,7 +47,7 @@ export const UserType = new GraphQLObjectType({
 });
 
 export const LabelType = new GraphQLObjectType({
-  name: "Label",
+  name: 'Label',
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLID) },
     name: { type: new GraphQLNonNull(GraphQLString) },
@@ -57,7 +57,7 @@ export const LabelType = new GraphQLObjectType({
 });
 
 export const CommentType = new GraphQLObjectType({
-  name: "Comment",
+  name: 'Comment',
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLID) },
     content: { type: new GraphQLNonNull(GraphQLString) },
@@ -70,7 +70,7 @@ export const CommentType = new GraphQLObjectType({
 });
 
 export const TicketType = new GraphQLObjectType({
-  name: "Ticket",
+  name: 'Ticket',
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLID) },
     title: { type: new GraphQLNonNull(GraphQLString) },
@@ -89,7 +89,7 @@ export const TicketType = new GraphQLObjectType({
 
 // Input types
 const TicketFilterInput = new GraphQLInputObjectType({
-  name: "TicketFilterInput",
+  name: 'TicketFilterInput',
   fields: {
     status: { type: StatusEnum },
     search: { type: GraphQLString },
@@ -98,11 +98,11 @@ const TicketFilterInput = new GraphQLInputObjectType({
 });
 
 const CreateTicketInput = new GraphQLInputObjectType({
-  name: "CreateTicketInput",
+  name: 'CreateTicketInput',
   fields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
     description: { type: new GraphQLNonNull(GraphQLString) },
-    priority: { type: PriorityEnum, defaultValue: "MEDIUM" },
+    priority: { type: PriorityEnum, defaultValue: 'MEDIUM' },
     assigneeId: { type: GraphQLID },
     dueDate: { type: GraphQLString },
     labelIds: { type: new GraphQLList(GraphQLID) },
@@ -110,7 +110,7 @@ const CreateTicketInput = new GraphQLInputObjectType({
 });
 
 const UpdateTicketInput = new GraphQLInputObjectType({
-  name: "UpdateTicketInput",
+  name: 'UpdateTicketInput',
   fields: {
     title: { type: GraphQLString },
     description: { type: GraphQLString },
@@ -124,7 +124,7 @@ const UpdateTicketInput = new GraphQLInputObjectType({
 
 // Root Query
 const Query = new GraphQLObjectType({
-  name: "Query",
+  name: 'Query',
   fields: {
     tickets: {
       type: new GraphQLList(TicketType),
@@ -153,7 +153,7 @@ const Query = new GraphQLObjectType({
 
 // Root Mutation
 const Mutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     createTicket: {
       type: TicketType,

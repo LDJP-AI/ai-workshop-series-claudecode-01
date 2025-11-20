@@ -1,7 +1,7 @@
 import TicketForm from '@/components/tickets/TicketForm';
 import Card from '@/components/ui/Card';
 import { createTicket } from '@/lib/actions/tickets';
-import { getUsers, getLabels } from '@/lib/data/tickets';
+import { getLabels, getUsers } from '@/lib/data/tickets';
 
 export default async function NewTicketPage() {
   const [users, labels] = await Promise.all([getUsers(), getLabels()]);

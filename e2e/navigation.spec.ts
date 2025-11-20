@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from '@playwright/test';
 import {
   clearTestData,
-  createTestUsers,
   createTestLabels,
+  createTestUsers,
   disconnectPrisma,
-} from "../playwright/testHelper";
+} from '../playwright/testHelper';
 
-test.describe("ナビゲーション", () => {
+test.describe('ナビゲーション', () => {
   test.beforeAll(async () => {
     // テストデータの初期化
     await clearTestData();
@@ -18,8 +18,8 @@ test.describe("ナビゲーション", () => {
     await disconnectPrisma();
   });
 
-  test("ヘッダーからダッシュボードへナビゲートできる", async ({ page }) => {
-    await page.goto("/tickets");
+  test('ヘッダーからダッシュボードへナビゲートできる', async ({ page }) => {
+    await page.goto('/tickets');
 
     // ページが読み込まれるまで待機
     await page.waitForTimeout(1000);
@@ -31,11 +31,11 @@ test.describe("ナビゲーション", () => {
     // ダッシュボードにリダイレクトされることを確認
     await page.waitForTimeout(1000);
     const currentUrl = page.url();
-    expect(currentUrl).toContain("/");
+    expect(currentUrl).toContain('/');
   });
 
-  test("ヘッダーからチケット一覧へナビゲートできる", async ({ page }) => {
-    await page.goto("/");
+  test('ヘッダーからチケット一覧へナビゲートできる', async ({ page }) => {
+    await page.goto('/');
 
     // ページが読み込まれるまで待機
     await page.waitForTimeout(1000);
@@ -47,16 +47,14 @@ test.describe("ナビゲーション", () => {
     // チケット一覧ページにリダイレクトされることを確認
     await page.waitForTimeout(1000);
     const currentUrl = page.url();
-    expect(currentUrl).toContain("/tickets");
+    expect(currentUrl).toContain('/tickets');
   });
 
-  test("ヘッダーから新規チケット作成ページへナビゲートできる", async ({
-    page,
-  }) => {
-    await page.goto("/tickets");
+  test('ヘッダーから新規チケット作成ページへナビゲートできる', async ({ page }) => {
+    await page.goto('/tickets');
 
     // チケット一覧ページが表示されていることを確認
-    const title = page.getByRole("heading", { name: "チケット一覧" });
+    const title = page.getByRole('heading', { name: 'チケット一覧' });
     await expect(title).toBeVisible();
 
     // ヘッダーの新規作成リンクをクリック
@@ -64,15 +62,13 @@ test.describe("ナビゲーション", () => {
     await newLink.click();
 
     // 新規作成ページにリダイレクトされることを確認
-    await expect(page).toHaveURL("/tickets/new");
-    const newTitle = page.getByRole("heading", { name: "新規チケット作成" });
+    await expect(page).toHaveURL('/tickets/new');
+    const newTitle = page.getByRole('heading', { name: '新規チケット作成' });
     await expect(newTitle).toBeVisible();
   });
 
-  test("ダッシュボードから新規チケット作成ボタンでナビゲートできる", async ({
-    page,
-  }) => {
-    await page.goto("/");
+  test('ダッシュボードから新規チケット作成ボタンでナビゲートできる', async ({ page }) => {
+    await page.goto('/');
 
     // ページが読み込まれるまで待機
     await page.waitForTimeout(2000);
@@ -89,7 +85,7 @@ test.describe("ナビゲーション", () => {
       // 新規作成ページにリダイレクトされることを確認
       await page.waitForTimeout(1000);
       const currentUrl = page.url();
-      expect(currentUrl).toContain("/tickets/new");
+      expect(currentUrl).toContain('/tickets/new');
     }
   });
 });

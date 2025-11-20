@@ -39,9 +39,7 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
       ) : (
         <div className="py-12 text-center">
           <p className="text-lg text-gray-500">チケットが見つかりません</p>
-          <p className="mt-2 text-sm text-gray-400">
-            フィルターを変更してお試しください
-          </p>
+          <p className="mt-2 text-sm text-gray-400">フィルターを変更してお試しください</p>
         </div>
       )}
     </main>

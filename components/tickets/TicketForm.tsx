@@ -27,7 +27,13 @@ function SubmitButton({ isLoading }: { isLoading?: boolean }) {
   );
 }
 
-export default function TicketForm({ action, ticket, isLoading, users = [], labels = [] }: TicketFormProps) {
+export default function TicketForm({
+  action,
+  ticket,
+  isLoading,
+  users = [],
+  labels = [],
+}: TicketFormProps) {
   const isEditing = !!ticket;
   const [description, setDescription] = useState(ticket?.description || '');
 
@@ -45,7 +51,7 @@ export default function TicketForm({ action, ticket, isLoading, users = [], labe
   const assigneeOptions = usersWithUnassigned.map((user) => ({
     value: user.id === 0 ? '' : user.id.toString(),
     label: user.name,
-  }));;
+  }));
 
   const formatDateForInput = (date: Date | undefined | null) => {
     if (!date) return '';

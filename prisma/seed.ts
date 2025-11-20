@@ -90,7 +90,7 @@ async function main() {
         priority: 'MEDIUM' as const,
         assigneeId: users[1]?.id,
         dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-        labelIds: labels.slice(1, 2).map(l => l.id),
+        labelIds: labels.slice(1, 2).map((l) => l.id),
       },
       {
         title: 'チケット検索機能の実装',
@@ -108,7 +108,7 @@ async function main() {
         status: 'OPEN' as const,
         priority: 'MEDIUM' as const,
         assigneeId: users[2]?.id,
-        labelIds: labels.slice(1, 2).map(l => l.id),
+        labelIds: labels.slice(1, 2).map((l) => l.id),
       },
       {
         title: 'データベーススキーマのドキュメント作成',
@@ -127,7 +127,7 @@ async function main() {
         status: 'DONE' as const,
         priority: 'LOW' as const,
         assigneeId: users[0]?.id,
-        labelIds: labels.slice(2, 3).map(l => l.id),
+        labelIds: labels.slice(2, 3).map((l) => l.id),
       },
       {
         title: 'エラーハンドリングの改善',
@@ -178,7 +178,9 @@ API エラーが発生した際、ユーザーへの通知が不十分です。
         'ありがとうございました。対応に感謝します。',
       ];
 
-      const shuffled = commentTexts.sort(() => Math.random() - 0.5).slice(0, Math.floor(Math.random() * 3) + 2);
+      const shuffled = commentTexts
+        .sort(() => Math.random() - 0.5)
+        .slice(0, Math.floor(Math.random() * 3) + 2);
 
       for (const commentText of shuffled) {
         await prisma.comment.create({

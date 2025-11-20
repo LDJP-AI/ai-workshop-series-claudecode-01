@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import TicketForm from '@/components/tickets/TicketForm';
 import Card from '@/components/ui/Card';
 import { updateTicket } from '@/lib/actions/tickets';
-import { getTicketById, getUsers, getLabels } from '@/lib/data/tickets';
+import { getLabels, getTicketById, getUsers } from '@/lib/data/tickets';
 
 interface EditTicketPageProps {
   params: Promise<{

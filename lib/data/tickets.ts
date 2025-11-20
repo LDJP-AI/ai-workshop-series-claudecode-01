@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
 // Fetch all tickets from database
 export async function getTickets() {
@@ -17,7 +17,7 @@ export async function getTickets() {
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
   });
 }
@@ -38,7 +38,7 @@ export async function getTicketById(id: number) {
           user: true,
         },
         orderBy: {
-          createdAt: "asc",
+          createdAt: 'asc',
         },
       },
     },
@@ -63,22 +63,15 @@ export async function getTicketsByStatus(status: string) {
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
   });
 }
 
 // Search tickets
-export async function searchTickets(
-  query: string,
-  status?: string,
-  sort?: string
-) {
+export async function searchTickets(query: string, status?: string, sort?: string) {
   // ステータスフィルターの設定
-  const statusFilter =
-    status && status !== 'ALL'
-      ? { status: status as any }
-      : {};
+  const statusFilter = status && status !== 'ALL' ? { status: status as any } : {};
 
   // ソートの設定（優先度以外）
   let orderBy: any = { createdAt: 'desc' };
@@ -93,10 +86,7 @@ export async function searchTickets(
       AND: [
         query
           ? {
-              OR: [
-                { title: { contains: query } },
-                { description: { contains: query } },
-              ],
+              OR: [{ title: { contains: query } }, { description: { contains: query } }],
             }
           : {},
         statusFilter,
@@ -138,9 +128,9 @@ export async function searchTickets(
 // Get ticket count by status
 export async function getTicketCount() {
   const [openCount, inProgressCount, doneCount] = await Promise.all([
-    prisma.ticket.count({ where: { status: "OPEN" } }),
-    prisma.ticket.count({ where: { status: "IN_PROGRESS" } }),
-    prisma.ticket.count({ where: { status: "DONE" } }),
+    prisma.ticket.count({ where: { status: 'OPEN' } }),
+    prisma.ticket.count({ where: { status: 'IN_PROGRESS' } }),
+    prisma.ticket.count({ where: { status: 'DONE' } }),
   ]);
 
   return {
@@ -159,7 +149,7 @@ export async function getOverdueTickets() {
         lt: now,
       },
       status: {
-        not: "DONE",
+        not: 'DONE',
       },
     },
     include: {
@@ -176,7 +166,7 @@ export async function getOverdueTickets() {
       },
     },
     orderBy: {
-      dueDate: "asc",
+      dueDate: 'asc',
     },
   });
 }

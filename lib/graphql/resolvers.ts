@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
 export const resolvers = {
   Query: {
@@ -15,7 +15,7 @@ export const resolvers = {
       const { filter } = args;
 
       let where: any = {};
-      let orderBy: any = { createdAt: "desc" };
+      let orderBy: any = { createdAt: 'desc' };
 
       if (filter?.status) {
         where.status = filter.status;
@@ -23,15 +23,15 @@ export const resolvers = {
 
       if (filter?.search) {
         where.OR = [
-          { title: { contains: filter.search, mode: "insensitive" } },
-          { description: { contains: filter.search, mode: "insensitive" } },
+          { title: { contains: filter.search, mode: 'insensitive' } },
+          { description: { contains: filter.search, mode: 'insensitive' } },
         ];
       }
 
-      if (filter?.sortBy === "priority") {
-        orderBy = { priority: "desc" };
-      } else if (filter?.sortBy === "updated") {
-        orderBy = { updatedAt: "desc" };
+      if (filter?.sortBy === 'priority') {
+        orderBy = { priority: 'desc' };
+      } else if (filter?.sortBy === 'updated') {
+        orderBy = { updatedAt: 'desc' };
       }
 
       return prisma.ticket.findMany({
@@ -101,7 +101,7 @@ export const resolvers = {
         data: {
           title: input.title,
           description: input.description,
-          priority: (input.priority || "MEDIUM") as 'LOW' | 'MEDIUM' | 'HIGH',
+          priority: (input.priority || 'MEDIUM') as 'LOW' | 'MEDIUM' | 'HIGH',
           assigneeId: input.assigneeId ? parseInt(input.assigneeId, 10) : null,
           dueDate: input.dueDate ? new Date(input.dueDate) : null,
           labels: {
@@ -169,8 +169,12 @@ export const resolvers = {
           ...(input.description && { description: input.description }),
           ...(input.status && { status: input.status as 'OPEN' | 'IN_PROGRESS' | 'DONE' }),
           ...(input.priority && { priority: input.priority as 'LOW' | 'MEDIUM' | 'HIGH' }),
-          ...(input.assigneeId !== undefined && { assigneeId: input.assigneeId ? parseInt(input.assigneeId, 10) : null }),
-          ...(input.dueDate !== undefined && { dueDate: input.dueDate ? new Date(input.dueDate) : null }),
+          ...(input.assigneeId !== undefined && {
+            assigneeId: input.assigneeId ? parseInt(input.assigneeId, 10) : null,
+          }),
+          ...(input.dueDate !== undefined && {
+            dueDate: input.dueDate ? new Date(input.dueDate) : null,
+          }),
         },
         include: {
           assignee: true,
