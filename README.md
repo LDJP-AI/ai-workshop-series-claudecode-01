@@ -79,6 +79,8 @@ npm ci
 
 **初回のみ数分かかります。**
 
+**注**: Windows 環境でバイナリー依存のライブラリによるエラーが発生した場合は、`npm install` を使用してください。
+
 #### 4-3. データベースのセットアップ
 
 ```bash
@@ -127,15 +129,15 @@ npm run dev
 
 ### 5. トラブルシューティング
 
-| 問題                                     | 対処方法                                                                                    |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Node.js がインストールされていない       | https://nodejs.org/ja/download                                                              |
-| VSCode がインストールされていない        | https://code.visualstudio.com/download                                                      |
-| Claude Code 拡張が見つからない           | VSCode の拡張タブから `claudecode` 検索                                                     |
-| Claude Code CLI がインストールされてない | [インストールガイド](https://code.claude.com/docs/ja/setup#標準インストール) 参照           |
-| `npm ci` でエラー                        | Node.js バージョンが 22+ か確認: `node --version`                                           |
-| `npm run prisma:migrate` でエラー        | `rm prisma/db/dev.db` 後、再度実行してみてください                                          |
-| localhost:3000 に接続できない            | ターミナルで `npm run dev` が実行中か確認。別のプロセスがポート 3000 を使用していないか確認 |
+| 問題                                     | 対処方法                                                                                                                                                                     |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js がインストールされていない       | https://nodejs.org/ja/download                                                                                                                                               |
+| VSCode がインストールされていない        | https://code.visualstudio.com/download                                                                                                                                       |
+| Claude Code 拡張が見つからない           | VSCode の拡張タブから `claudecode` 検索                                                                                                                                      |
+| Claude Code CLI がインストールされてない | [インストールガイド](https://code.claude.com/docs/ja/setup#標準インストール) 参照                                                                                            |
+| `npm ci` でエラー                        | Node.js バージョンが 22+ か確認: `node --version`。**Windows 環境**ではバイナリー依存のライブラリでエラーになることがあります。その場合は `npm install` を使用してください。 |
+| `npm run prisma:migrate` でエラー        | `rm prisma/db/dev.db` 後、再度実行してみてください                                                                                                                           |
+| localhost:3000 に接続できない            | ターミナルで `npm run dev` が実行中か確認。別のプロセスがポート 3000 を使用していないか確認                                                                                  |
 
 ## 技術スタック
 
